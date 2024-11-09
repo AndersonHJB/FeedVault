@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 import os
-import yaml
 import random
 import string
 from functools import wraps
@@ -137,7 +136,20 @@ def subscription():
     if user.expiration_date < datetime.now():
         return "链接已失效", 404
 
-    return render_template('subscription.html', user=user)
+    # 生成用户的专属订阅链接
+    subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True)
+    return render_template('subscription.html', user=user, subscription_url=subscription_url)
+
+
+@app.route('/subscription/<subscription_link>.yml')
+def get_subscription_file(subscription_link):
+    # 验证订阅链接是否有效
+    user = User.query.filter_by(subscription_link=subscription_link).first()
+    if not user or user.expiration_date < datetime.now():
+        return "订阅链接已失效或无效", 404
+
+    # 返回本地的 YAML 文件
+    return send_file('iggfeed.yaml', mimetype='application/x-yaml')
 
 
 def generate_subscription_link():

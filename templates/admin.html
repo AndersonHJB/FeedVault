@@ -3,46 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>管理后台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>管理后台</h1>
+    <div class="container">
+        <h1>管理后台</h1>
 
-    <h2>添加新用户</h2>
-    <form method="post">
-        <label>用户名: <input type="text" name="username"></label><br>
-        <label>密码: <input type="password" name="password"></label><br>
-        <label>有效期天数: <input type="number" name="expiration_days" value="30"></label><br>
-        <button type="submit">添加用户</button>
-    </form>
+        <form method="post">
+            <h2>添加新用户</h2>
+            <label for="username">用户名</label>
+            <input type="text" name="username" id="username" required>
 
-    <h2>用户列表</h2>
-    <table>
-        <tr>
-            <th>用户名</th>
-            <th>订阅链接</th>
-            <th>有效期</th>
-            <th>操作</th>
-        </tr>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.subscription_link }}</td>
-            <td>{{ user.expiration_date }}</td>
-            <td>
-                <form method="post">
-                    <input type="hidden" name="delete_user" value="{{ user.id }}">
-                    <button type="submit">删除</button>
-                </form>
-                <form method="post">
-                    <input type="hidden" name="extend_expiration" value="{{ user.id }}">
-                    <label>延长有效期 (天数): <input type="number" name="additional_days" value="0"></label>
-                    <button type="submit">更新</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="{{ url_for('logout') }}">退出登录</a>
+            <label for="password">密码</label>
+            <input type="password" name="password" id="password" required>
+
+            <label for="expiration_days">有效期天数</label>
+            <input type="number" name="expiration_days" id="expiration_days" value="30" required>
+
+            <button type="submit">添加用户</button>
+        </form>
+
+        <h2>用户列表</h2>
+        <table>
+            <tr>
+                <th>用户名</th>
+                <th>订阅链接</th>
+                <th>有效期</th>
+                <th>操作</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.subscription_link }}</td>
+                <td>{{ user.expiration_date }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="delete_user" value="{{ user.id }}">
+                        <button type="submit">删除</button>
+                    </form>
+                    <form method="post" style="margin-top: 8px;">
+                        <input type="hidden" name="extend_expiration" value="{{ user.id }}">
+                        <label>延长有效期（天）：</label>
+                        <input type="number" name="additional_days" value="0" required>
+                        <button type="submit">更新</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
+    </div>
 </body>
 </html>
