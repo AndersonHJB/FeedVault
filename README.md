@@ -1,7 +1,5 @@
 # FeedVault「Flask 订阅管理系统」
 
-![img.png](img.png)
-
 你好，我是悦创。
 
 该项目是一个基于 Flask 的订阅管理系统，主要功能包括：
