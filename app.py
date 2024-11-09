@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import os
 import random
 import string
+import qrcode
 from functools import wraps
 
 app = Flask(__name__)
@@ -136,9 +137,19 @@ def subscription():
     if user.expiration_date < datetime.now():
         return "链接已失效", 404
 
+    # 计算剩余天数
+    remaining_days = (user.expiration_date - datetime.now()).days
+
     # 生成用户的专属订阅链接
     subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True)
-    return render_template('subscription.html', user=user, subscription_url=subscription_url)
+
+    # 生成订阅链接二维码
+    qr = qrcode.make(subscription_url)
+    qr_path = f"static/qrcodes/{user.subscription_link}.png"
+    qr.save(qr_path)
+
+    return render_template('subscription.html', user=user, subscription_url=subscription_url,
+                           remaining_days=remaining_days, qr_path=qr_path)
 
 
 @app.route('/subscription/<subscription_link>.yml')
@@ -157,5 +168,7 @@ def generate_subscription_link():
 
 
 if __name__ == '__main__':
+    # 创建静态目录用于存储二维码图像
+    os.makedirs('static/qrcodes', exist_ok=True)
     db.create_all()
     app.run(debug=True)

@@ -9,10 +9,31 @@
 <body>
     <div class="container">
         <h1>您的订阅信息</h1>
-{#        <p>订阅链接：<a href="{{ url_for('subscription') }}">{{ request.url }}</a></p>#}
+
+        <!-- 显示订阅链接 -->
         <p>订阅链接：<a href="{{ subscription_url }}" target="_blank">{{ subscription_url }}</a></p>
-        <p>有效期至：{{ user.expiration_date }}</p>
+
+        <!-- 剩余天数显示 -->
+        <p>有效期剩余：{{ remaining_days }} 天</p>
+
+        <!-- 二维码显示 -->
+        <h3>订阅二维码</h3>
+        <img src="{{ url_for('static', filename='qrcodes/' + user.subscription_link + '.png') }}" alt="订阅二维码" style="width: 150px; height: 150px;">
+
+        <!-- 复制链接按钮 -->
+        <button onclick="copyToClipboard('{{ subscription_url }}')">复制订阅链接</button>
+
         <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
     </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("订阅链接已复制到剪贴板！");
+            }).catch(err => {
+                console.error("复制失败:", err);
+            });
+        }
+    </script>
 </body>
 </html>
