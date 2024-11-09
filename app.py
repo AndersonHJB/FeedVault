@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
@@ -6,6 +6,7 @@ import os
 import yaml
 import random
 import string
+from functools import wraps
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -25,7 +26,20 @@ class User(db.Model):
         return f"<User {self.username}>"
 
 
+# 管理员验证装饰器
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'admin_logged_in' not in session:
+            flash("请先登录", "danger")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
 @app.route('/admin', methods=['GET', 'POST'])
+@login_required
 def admin():
     if request.method == 'POST':
         if 'username' in request.form and 'password' in request.form:
@@ -53,6 +67,15 @@ def admin():
                 db.session.commit()
                 flash('用户已删除', 'success')
 
+        elif 'extend_expiration' in request.form:
+            # 更新用户有效期
+            user = User.query.get(request.form['extend_expiration'])
+            additional_days = int(request.form.get('additional_days', 0))
+            if user:
+                user.expiration_date += timedelta(days=additional_days)
+                db.session.commit()
+                flash('有效期已更新', 'success')
+
     users = User.query.all()
     return render_template('admin.html', users=users)
 
@@ -60,8 +83,9 @@ def admin():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
-        if user and bcrypt.check_password_hash(user.password, request.form['password']):
+        if request.form.get('username') == 'admin' and request.form.get(
+                'password') == 'admin_password':  # 假设密码是 'admin_password'
+            session['admin_logged_in'] = True
             flash('登录成功', 'success')
             return redirect(url_for('admin'))
         else:
@@ -69,12 +93,30 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/<path:subscription_link>.yml')
+@app.route('/logout')
+def logout():
+    session.pop('admin_logged_in', None)
+    flash("已退出登录", "info")
+    return redirect(url_for('login'))
+
+
+@app.route('/<path:subscription_link>', methods=['GET', 'POST'])
 def subscription(subscription_link):
     user = User.query.filter_by(subscription_link=subscription_link).first()
-    if not user or user.expiration_date < datetime.now():
-        return "链接已失效或无效", 404
-    return send_file('iggfeed.yaml', mimetype='application/x-yaml')
+    if not user:
+        return "链接无效", 404
+
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if bcrypt.check_password_hash(user.password, password):
+            if user.expiration_date < datetime.now():
+                return "链接已失效", 404
+            # 返回 YAML 文件内容
+            return send_file('iggfeed.yaml', mimetype='application/x-yaml')
+        else:
+            flash("密码错误", "danger")
+
+    return render_template('subscription.html', user=user)
 
 
 def generate_subscription_link():
@@ -82,7 +124,5 @@ def generate_subscription_link():
 
 
 if __name__ == '__main__':
-    # db.create_all()
-    with app.app_context():
-        db.create_all()  # 创建数据库和表
+    db.create_all()
     app.run(debug=True)
