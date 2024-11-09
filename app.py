@@ -26,8 +26,20 @@ class User(db.Model):
         return f"<User {self.username}>"
 
 
-# 管理员验证装饰器
-def login_required(f):
+# 用户登录验证装饰器
+def user_login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_logged_in' not in session:
+            flash("请先登录", "danger")
+            return redirect(url_for('user_login'))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+# 管理员登录验证装饰器
+def admin_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'admin_logged_in' not in session:
@@ -39,11 +51,10 @@ def login_required(f):
 
 
 @app.route('/admin', methods=['GET', 'POST'])
-@login_required
+@admin_login_required
 def admin():
     if request.method == 'POST':
         if 'username' in request.form and 'password' in request.form:
-            # 添加用户
             hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
             expiration_days = int(request.form.get('expiration_days', 30))
             expiration_date = datetime.now() + timedelta(days=expiration_days)
@@ -60,7 +71,6 @@ def admin():
             flash('用户已创建', 'success')
 
         elif 'delete_user' in request.form:
-            # 删除用户
             user = User.query.get(request.form['delete_user'])
             if user:
                 db.session.delete(user)
@@ -68,7 +78,6 @@ def admin():
                 flash('用户已删除', 'success')
 
         elif 'extend_expiration' in request.form:
-            # 更新用户有效期
             user = User.query.get(request.form['extend_expiration'])
             additional_days = int(request.form.get('additional_days', 0))
             if user:
@@ -83,8 +92,7 @@ def admin():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form.get('username') == 'admin' and request.form.get(
-                'password') == 'admin_password':  # 假设密码是 'admin_password'
+        if request.form.get('username') == 'admin' and request.form.get('password') == 'admin':
             session['admin_logged_in'] = True
             flash('登录成功', 'success')
             return redirect(url_for('admin'))
@@ -93,28 +101,41 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/user_login', methods=['GET', 'POST'])
+def user_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and bcrypt.check_password_hash(user.password, password):
+            session['user_logged_in'] = True
+            session['user_id'] = user.id
+            flash('用户登录成功', 'success')
+            return redirect(url_for('subscription'))
+        else:
+            flash('用户名或密码错误', 'danger')
+    return render_template('user_login.html')
+
+
 @app.route('/logout')
 def logout():
     session.pop('admin_logged_in', None)
+    session.pop('user_logged_in', None)
+    session.pop('user_id', None)
     flash("已退出登录", "info")
     return redirect(url_for('login'))
 
 
-@app.route('/<path:subscription_link>', methods=['GET', 'POST'])
-def subscription(subscription_link):
-    user = User.query.filter_by(subscription_link=subscription_link).first()
+@app.route('/subscription')
+@user_login_required
+def subscription():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
     if not user:
-        return "链接无效", 404
+        return "用户不存在", 404
 
-    if request.method == 'POST':
-        password = request.form.get('password')
-        if bcrypt.check_password_hash(user.password, password):
-            if user.expiration_date < datetime.now():
-                return "链接已失效", 404
-            # 返回 YAML 文件内容
-            return send_file('iggfeed.yaml', mimetype='application/x-yaml')
-        else:
-            flash("密码错误", "danger")
+    if user.expiration_date < datetime.now():
+        return "链接已失效", 404
 
     return render_template('subscription.html', user=user)
 

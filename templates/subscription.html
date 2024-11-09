@@ -6,24 +6,9 @@
     <title>Subscription Access</title>
 </head>
 <body>
-    <h1>访问订阅</h1>
-    <p>订阅链接：{{ request.url }}</p>
+    <h1>您的订阅</h1>
+    <p>订阅链接：<a href="{{ url_for('subscription') }}">{{ request.url }}</a></p>
     <p>有效期至：{{ user.expiration_date }}</p>
-
-    <form method="post">
-        <label>输入密码以访问订阅内容:</label>
-        <input type="password" name="password">
-        <button type="submit">访问</button>
-    </form>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-            {% for category, message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <a href="{{ url_for('logout') }}">退出登录</a>
 </body>
 </html>
