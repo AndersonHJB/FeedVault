@@ -10,20 +10,30 @@
     <div class="container">
         <h1>管理后台</h1>
 
-        <form method="post">
-            <h2>添加新用户</h2>
-            <label for="username">用户名</label>
-            <input type="text" name="username" id="username" required>
+        <!-- 添加用户按钮 -->
+        <button id="addUserButton">添加用户</button>
 
-            <label for="password">密码</label>
-            <input type="password" name="password" id="password" required>
+        <!-- 添加用户对话框 -->
+        <div id="addUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>添加新用户</h2>
+                <form method="post">
+                    <label for="username">用户名</label>
+                    <input type="text" name="username" id="username" required>
 
-            <label for="expiration_days">有效期天数</label>
-            <input type="number" name="expiration_days" id="expiration_days" value="30" required>
+                    <label for="password">密码</label>
+                    <input type="password" name="password" id="password" required>
 
-            <button type="submit">添加用户</button>
-        </form>
+                    <label for="expiration_days">有效期天数</label>
+                    <input type="number" name="expiration_days" id="expiration_days" value="30" required>
 
+                    <button type="submit">提交</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 用户列表 -->
         <h2>用户列表</h2>
         <table>
             <tr>
@@ -38,21 +48,49 @@
                 <td>{{ user.subscription_link }}</td>
                 <td>{{ user.expiration_date }}</td>
                 <td>
-                    <form method="post">
+                    <!-- 删除用户表单 -->
+                    <form method="post" style="display: inline;">
                         <input type="hidden" name="delete_user" value="{{ user.id }}">
                         <button type="submit">删除</button>
                     </form>
-                    <form method="post" style="margin-top: 8px;">
+
+                    <!-- 延长有效期表单 -->
+                    <form method="post" style="display: inline;">
                         <input type="hidden" name="extend_expiration" value="{{ user.id }}">
-                        <label>延长有效期（天）：</label>
-                        <input type="number" name="additional_days" value="0" required>
-                        <button type="submit">更新</button>
+                        <input type="number" name="additional_days" value="0" style="width: 50px;">
+                        <button type="submit">延长</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </table>
+
+        <!-- 登出链接 -->
         <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
     </div>
+
+    <script>
+        // 获取对话框元素
+        const modal = document.getElementById("addUserModal");
+        const addUserButton = document.getElementById("addUserButton");
+        const closeModal = document.getElementsByClassName("close")[0];
+
+        // 点击“添加用户”按钮打开对话框
+        addUserButton.onclick = function() {
+            modal.style.display = "block";
+        };
+
+        // 点击“关闭”按钮关闭对话框
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        };
+
+        // 点击对话框外部关闭对话框
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
 </body>
 </html>
