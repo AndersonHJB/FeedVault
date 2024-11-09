@@ -132,3 +132,21 @@ td {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* 复制成功提示，显示在按钮上方 */
+.copy-success {
+    position: absolute;
+    top: -30px; /* 调整到按钮的上方 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    white-space: nowrap;
+}
