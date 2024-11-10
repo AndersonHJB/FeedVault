@@ -4,45 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理后台</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>管理后台</h1>
+<div class="container">
+    <h1>管理后台</h1>
 
-        <!-- 添加用户按钮 -->
-        <button id="addUserButton">添加用户</button>
+    <!-- 添加用户按钮 -->
+    <button id="addUserButton">添加用户</button>
 
-        <!-- 添加用户对话框 -->
-        <div id="addUserModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>添加新用户</h2>
-                <form method="post">
-                    <label for="username">用户名</label>
-                    <input type="text" name="username" id="username" required>
+    <!-- 添加用户对话框 -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>添加新用户</h2>
+            <form method="post">
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username" required>
 
-                    <label for="password">密码</label>
-                    <input type="password" name="password" id="password" required>
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password" required>
 
-                    <label for="expiration_days">有效期天数</label>
-                    <input type="number" name="expiration_days" id="expiration_days" value="30" required>
+                <label for="expiration_days">有效期天数</label>
+                <input type="number" name="expiration_days" id="expiration_days" value="30" required>
 
-                    <button type="submit">提交</button>
-                </form>
-            </div>
+                <button type="submit">提交</button>
+            </form>
         </div>
+    </div>
 
-        <!-- 用户列表 -->
-        <h2>用户列表</h2>
-        <table>
-            <tr>
-                <th>用户名</th>
-                <th>订阅链接</th>
-                <th>有效期</th>
-                <th>操作</th>
-            </tr>
-            {% for user in users %}
+    <!-- 用户列表 -->
+    <h2>用户列表</h2>
+    <table>
+        <tr>
+            <th>用户名</th>
+            <th>订阅链接</th>
+            <th>有效期</th>
+            <th>操作</th>
+        </tr>
+        {% for user in users %}
             <tr>
                 <td>{{ user.username }}</td>
                 <td>{{ user.subscription_link }}</td>
@@ -62,35 +63,35 @@
                     </form>
                 </td>
             </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
 
-        <!-- 登出链接 -->
-        <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
-    </div>
+    <!-- 登出链接 -->
+    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
+</div>
 
-    <script>
-        // 获取对话框元素
-        const modal = document.getElementById("addUserModal");
-        const addUserButton = document.getElementById("addUserButton");
-        const closeModal = document.getElementsByClassName("close")[0];
+<script>
+    // 获取对话框元素
+    const modal = document.getElementById("addUserModal");
+    const addUserButton = document.getElementById("addUserButton");
+    const closeModal = document.getElementsByClassName("close")[0];
 
-        // 点击“添加用户”按钮打开对话框
-        addUserButton.onclick = function() {
-            modal.style.display = "block";
-        };
+    // 点击“添加用户”按钮打开对话框
+    addUserButton.onclick = function () {
+        modal.style.display = "block";
+    };
 
-        // 点击“关闭”按钮关闭对话框
-        closeModal.onclick = function() {
+    // 点击“关闭”按钮关闭对话框
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    // 点击对话框外部关闭对话框
+    window.onclick = function (event) {
+        if (event.target == modal) {
             modal.style.display = "none";
-        };
-
-        // 点击对话框外部关闭对话框
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
-    </script>
+        }
+    };
+</script>
 </body>
 </html>

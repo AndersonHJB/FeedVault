@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>用户登录</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
-    <div class="container login-container">
-        <h1>用户登录</h1>
-        <form method="post" class="login-form">
-            <label for="username">用户名</label>
-            <input type="text" name="username" id="username" required>
+<div class="container login-container">
+    <h1>用户登录</h1>
+    <form method="post" class="login-form">
+        <input type="text" name="username" id="username" placeholder="用户名" required>
 
-            <label for="password">密码</label>
-            <input type="password" name="password" id="password" required>
 
-            <button type="submit" class="login-button">登录</button>
-        </form>
+        <input type="password" name="password" id="password" placeholder="密码" required>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-    </div>
+        <button type="submit" class="login-button">登录</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
 </body>
 </html>
