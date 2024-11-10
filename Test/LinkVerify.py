@@ -9,8 +9,8 @@ def response(url):
 
 
 if __name__ == '__main__':
-    # url = 'http://127.0.0.1:5000/subscription/lUXKMGmSg8.yml'
-    url = 'http://127.0.0.1:5000/subscription/Ye2GGeKryX.yml'
+    url = 'http://127.0.0.1:5000/subscription/lUXKMGmSg8.yml'
+    # url = 'http://127.0.0.1:5000/subscription/Ye2GGeKryX.yml'
     # url = 'http://127.0.0.1:5000/n6YKqu9f5a.yml'
     # url = 'http://127.0.0.1:5000/subscription'
     res = response(url)
