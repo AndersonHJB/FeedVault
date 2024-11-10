@@ -12,7 +12,8 @@
     <h1>管理后台</h1>
 
     <!-- 添加用户按钮 -->
-    <button id="addUserButton">添加用户</button>
+{#    <button id="addUserButton">添加用户</button>#}
+    <button id="addUserButton" class="btn">添加用户</button>
 
     <!-- 添加用户对话框 -->
     <div id="addUserModal" class="modal">
@@ -67,7 +68,8 @@
     </table>
 
     <!-- 登出链接 -->
-    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
+{#    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>#}
+    <a href="{{ url_for('logout') }}" class="logout">退出登录</a>
 </div>
 
 <script>

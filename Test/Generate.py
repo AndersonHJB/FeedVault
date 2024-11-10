@@ -15,11 +15,26 @@ def generate_text(paths):
         f.write(text)
 
 if __name__ == '__main__':
-    paths = [
-        'templates/admin.html',
-        'templates/login.html',
-        'templates/user_login.html',
-        'templates/subscription.html',
-        'static/style.css'
-    ]
-    generate_text(paths)
+    data_dict = {
+        'admin': [
+            'templates/admin.html',
+            'static/admin.css',
+        ],
+        'login': [
+            'templates/login.html',
+            'templates/user_login.html',
+            'static/login.css',
+        ],
+        'subscription': [
+            'templates/subscription.html',
+            'static/subscription.css',
+        ],
+        'other': [
+            'static/base.css',
+        ],
+    }
+    # for paths in data_dict.values():
+    #     # print(path)
+    #     generate_text(paths)
+
+    generate_text(data_dict['admin'])
