@@ -108,3 +108,9 @@ your_project/
 ## 许可
 
 该项目基于 MIT 许可。
+
+## 测试部署一键部署
+
+```bash
+source /home/huangjiabao/.virtualenvs/FeedVault/bin/activate && cd /home/huangjiabao/domains/fv.bornforthis.cn/public_python && cd FeedVault && git pull && cd .. && cp -r ./FeedVault/* .
+```
