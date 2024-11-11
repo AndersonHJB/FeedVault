@@ -13,7 +13,8 @@ admin.html:
     <h1>管理后台</h1>
 
     <!-- 添加用户按钮 -->
-    <button id="addUserButton">添加用户</button>
+{#    <button id="addUserButton">添加用户</button>#}
+    <button id="addUserButton" class="btn">添加用户</button>
 
     <!-- 添加用户对话框 -->
     <div id="addUserModal" class="modal">
@@ -68,7 +69,8 @@ admin.html:
     </table>
 
     <!-- 登出链接 -->
-    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>
+{#    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>#}
+    <a href="{{ url_for('logout') }}" class="logout">退出登录</a>
 </div>
 
 <script>
@@ -98,21 +100,64 @@ admin.html:
 </html>
 
 admin.css:
-/* admin.css */
+/* 基础样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* 容器样式 */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 标题样式 */
+h1, h2 {
+    color: #1d1d1f;
+    text-align: center;
+}
+
+/* 按钮样式 */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 表格样式 */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    font-size: 14px;
 }
 
-th,
-td {
+th, td {
     padding: 12px;
     border-bottom: 1px solid #e5e5ea;
     text-align: left;
 }
 
 th {
+    background-color: #f0f0f5;
     font-weight: 600;
     color: #1d1d1f;
 }
@@ -121,42 +166,67 @@ td {
     color: #48484a;
 }
 
+/* 弹窗样式 */
 .modal {
     display: none;
     position: fixed;
     z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+    left: 50%;
+    top: 50%;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.4);
+    /*display: flex;*/
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
     background-color: #ffffff;
-    margin: auto;
     padding: 20px;
-    border-radius: 16px;
+    border-radius: 8px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s;
 }
 
+/* 关闭按钮样式 */
 .close {
-    color: #aaa;
+    color: #555;
     float: right;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.close:hover, .close:focus {
+    color: #333;
 }
 
+/* 输入框样式 */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* 登出链接 */
+a.logout {
+    display: block;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+a.logout:hover {
+    color: #0056b3;
+}

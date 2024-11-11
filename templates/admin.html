@@ -12,7 +12,6 @@
     <h1>管理后台</h1>
 
     <!-- 添加用户按钮 -->
-{#    <button id="addUserButton">添加用户</button>#}
     <button id="addUserButton" class="btn">添加用户</button>
 
     <!-- 添加用户对话框 -->
@@ -37,38 +36,43 @@
 
     <!-- 用户列表 -->
     <h2>用户列表</h2>
-    <table>
-        <tr>
-            <th>用户名</th>
-            <th>订阅链接</th>
-            <th>有效期</th>
-            <th>操作</th>
-        </tr>
-        {% for user in users %}
+    <div class="table-container">
+        <table>
+            <thead>
             <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.subscription_link }}</td>
-                <td>{{ user.expiration_date }}</td>
-                <td>
-                    <!-- 删除用户表单 -->
-                    <form method="post" style="display: inline;">
-                        <input type="hidden" name="delete_user" value="{{ user.id }}">
-                        <button type="submit">删除</button>
-                    </form>
-
-                    <!-- 延长有效期表单 -->
-                    <form method="post" style="display: inline;">
-                        <input type="hidden" name="extend_expiration" value="{{ user.id }}">
-                        <input type="number" name="additional_days" value="0" style="width: 50px;">
-                        <button type="submit">延长</button>
-                    </form>
-                </td>
+                <th>用户名</th>
+                <th>订阅链接</th>
+                <th>有效期</th>
+                <th>操作</th>
             </tr>
-        {% endfor %}
-    </table>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.subscription_link }}</td>
+                    <td>{{ user.expiration_date }}</td>
+                    <td>
+                        <!-- 删除用户表单 -->
+                        <form method="post" style="display: inline;">
+                            <input type="hidden" name="delete_user" value="{{ user.id }}">
+                            <button type="submit">删除</button>
+                        </form>
+
+                        <!-- 延长有效期表单 -->
+                        <form method="post" style="display: inline;">
+                            <input type="hidden" name="extend_expiration" value="{{ user.id }}">
+                            <input type="number" name="additional_days" value="0" style="width: 50px;">
+                            <button type="submit">延长</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <!-- 登出链接 -->
-{#    <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 20px;">退出登录</a>#}
     <a href="{{ url_for('logout') }}" class="logout">退出登录</a>
 </div>
 
