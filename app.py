@@ -171,4 +171,5 @@ if __name__ == '__main__':
     # 创建静态目录用于存储二维码图像
     os.makedirs('static/qrcodes', exist_ok=True)
     db.create_all()
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
