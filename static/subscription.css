@@ -1,4 +1,6 @@
 /* subscription.css */
+
+/* 复制成功提示样式 */
 .copy-success {
     position: absolute;
     top: -30px;
@@ -14,4 +16,23 @@
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     white-space: nowrap;
+}
+
+/* 链接容器样式 */
+.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.link-container a {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 10px;
+}
+
+.link-container a:hover {
+    color: #666;
 }

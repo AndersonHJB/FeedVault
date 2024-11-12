@@ -65,15 +65,22 @@
             margin-bottom: 30px;
         }
 
-        .logout-link {
-            display: inline-block;
+        /* 链接容器样式 */
+        .link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-top: 20px;
+        }
+
+        .link-container a {
             color: #999;
             text-decoration: none;
             font-size: 14px;
+            margin: 0 10px;
         }
 
-        .logout-link:hover {
+        .link-container a:hover {
             color: #666;
         }
 
@@ -117,7 +124,11 @@
         <div class="qr-code-label">Shadowrocket订阅码</div>
     </div>
 
-    <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
+    <!-- 退出登录和购买页面链接 -->
+    <div class="link-container">
+        <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
+        <a href="purchase" class="purchase-link">购买页面</a>
+    </div>
 </div>
 
 <script>
