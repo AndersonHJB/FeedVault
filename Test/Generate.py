@@ -20,6 +20,10 @@ if __name__ == '__main__':
             "app.py",
             "config.py",
         ],
+        'index': [
+            "templates/index.html",
+            "static/index.css"
+        ],
         'admin': [
             'templates/admin.html',
             'static/admin.css',

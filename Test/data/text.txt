@@ -50,6 +50,16 @@ def admin_login_required(f):
 
     return decorated_function
 
+@app.route('/')
+def index():
+    # 定义视频列表
+    videos = [
+        {'id': 'Video1', 'title': '视频1', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+        {'id': 'Video2', 'title': '视频2', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+        {'id': 'Video3', 'title': '视频3', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+    ]
+    return render_template('index.html', videos=videos)
+
 
 @app.route('/admin', methods=['GET', 'POST'])
 @admin_login_required
@@ -190,6 +200,266 @@ class Config:
     SECRET_KEY = os.urandom(24)
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+index.html:
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <!-- 引入自定义的样式表 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <!-- 使用 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="logo">MyWebsite</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">主页</a></li>
+            <li><a href="{{ url_for('user_login') }}">用户登录</a></li>
+            <li><a href="{{ url_for('login') }}">管理员登录</a></li>
+            <li><a href="{{ url_for('purchase') }}">购买</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- 主体内容 -->
+<div class="container main-content">
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">欢迎来到我们的网站</h1>
+
+    <!-- 选项卡 -->
+    <div class="tabs">
+        <ul class="tab-links">
+            {% for video in videos %}
+                <li><a href="#{{ video.id }}" class="{% if loop.first %}active{% endif %}">{{ video.title }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <!-- 选项卡内容 -->
+        <div class="tab-content">
+            {% for video in videos %}
+                <div id="{{ video.id }}" class="tab {% if loop.first %}active{% endif %}">
+                    <h2>{{ video.title }}</h2>
+                    <video controls>
+                        <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
+                        您的浏览器不支持 HTML5 视频。
+                    </video>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2023 MyWebsite. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script>
+    // 选项卡切换功能
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabLinks = document.querySelectorAll('.tab-links a');
+        const tabs = document.querySelectorAll('.tab-content .tab');
+
+        tabLinks.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // 移除所有激活状态
+                tabLinks.forEach(function (item) {
+                    item.classList.remove('active');
+                });
+                tabs.forEach(function (tab) {
+                    tab.classList.remove('active');
+                });
+
+                // 激活当前选项卡
+                this.classList.add('active');
+                const activeTab = document.querySelector(this.getAttribute('href'));
+                activeTab.classList.add('active');
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+
+index.css:
+/* 使用自定义字体 */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #eaeaea;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+}
+
+.navbar .nav-links li {
+    margin-left: 20px;
+}
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #000;
+}
+
+/* 主体内容样式 */
+.main-content {
+    padding: 100px 20px 60px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+    color: #222;
+}
+
+/* 选项卡样式 */
+.tabs {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tab-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+.tab-links li {
+    margin: 0 10px;
+}
+
+.tab-links a {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #eaeaea;
+    color: #555;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab-links a.active,
+.tab-links a:hover {
+    background-color: #d4d4d4;
+    color: #333;
+}
+
+.tab-content .tab {
+    display: none;
+}
+
+.tab-content .tab.active {
+    display: block;
+}
+
+.tab-content h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 视频样式 */
+video {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 页脚样式 */
+.footer {
+    background-color: #fff;
+    border-top: 1px solid #eaeaea;
+    padding: 20px 0;
+}
+
+.footer .container {
+    text-align: center;
+}
+
+.footer p {
+    color: #777;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .navbar .nav-links {
+        display: none;
+    }
+
+    .navbar .menu-toggle {
+        display: block;
+    }
+
+    .main-content {
+        padding: 80px 15px 40px;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .tab-links {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab-links li {
+        margin: 5px 0;
+    }
+}
 
 admin.html:
 <!DOCTYPE html>
