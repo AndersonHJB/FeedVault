@@ -114,6 +114,7 @@ def user_login():
             return redirect(url_for('subscription'))
         else:
             flash('用户名或密码错误', 'danger')
+            return redirect(url_for('purchase'))  # 添加这一行
     return render_template('user_login.html')
 
 
@@ -151,6 +152,9 @@ def subscription():
     return render_template('subscription.html', user=user, subscription_url=subscription_url,
                            remaining_days=remaining_days, qr_path=qr_path)
 
+@app.route('/purchase', methods=['GET', 'POST'])
+def purchase():
+    return render_template('purchase.html')
 
 @app.route('/subscription/<subscription_link>.yml')
 def get_subscription_file(subscription_link):

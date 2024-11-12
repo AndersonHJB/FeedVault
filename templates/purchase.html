@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>购买VPN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <style>
+        /* 添加自定义样式 */
+        .qr-code {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>购买VPN</h1>
+    <p>请购买我们的VPN服务，享受高速稳定的网络体验。</p>
+    <button id="purchaseButton">购买VPN</button>
+
+    <!-- 弹窗 -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>提示：付款时请在备注中填写您的微信号。</p>
+            <button id="confirmButton">确认</button>
+        </div>
+    </div>
+
+    <!-- 二维码显示 -->
+    <div class="qr-code" id="qrCode">
+        <p>请使用微信扫描以下二维码进行付款：</p>
+        <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
+    </div>
+</div>
+
+<script>
+    // 获取元素
+    var modal = document.getElementById("purchaseModal");
+    var btn = document.getElementById("purchaseButton");
+    var span = document.getElementsByClassName("close")[0];
+    var confirmButton = document.getElementById("confirmButton");
+    var qrCode = document.getElementById("qrCode");
+
+    // 点击购买按钮，打开弹窗
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // 点击关闭按钮，关闭弹窗
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // 点击确认按钮，显示二维码
+    confirmButton.onclick = function () {
+        modal.style.display = "none";
+        qrCode.style.display = "block";
+    }
+
+    // 点击弹窗外部，关闭弹窗
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
