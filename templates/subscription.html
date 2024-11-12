@@ -56,6 +56,12 @@
         .qr-code img {
             width: 200px;
             height: 200px;
+            margin-bottom: 10px; /* 调整间距 */
+        }
+
+        .qr-code-label {
+            font-size: 1em;
+            color: #333;
             margin-bottom: 30px;
         }
 
@@ -107,6 +113,8 @@
     <!-- 二维码显示 -->
     <div class="qr-code">
         <img src="{{ url_for('static', filename='qrcodes/' + user.subscription_link + '.png') }}" alt="订阅二维码">
+        <!-- 添加二维码标签 -->
+        <div class="qr-code-label">Shadowrocket订阅码</div>
     </div>
 
     <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
