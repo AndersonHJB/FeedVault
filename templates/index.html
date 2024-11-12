@@ -3,132 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>主页</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
-    <style>
-        /* 菜单栏样式 */
-        .menu-bar {
-            display: flex;
-            background-color: #333;
-            overflow: hidden;
-        }
-
-        .menu-bar a {
-            padding: 14px 16px;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .menu-bar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        /* 选项卡样式 */
-        .tab {
-            overflow: hidden;
-            border-bottom: 1px solid #ccc;
-            background-color: #f1f1f1;
-            margin-top: 20px;
-        }
-
-        .tab button {
-            background-color: inherit;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 16px;
-        }
-
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        /* 选项卡内容样式 */
-        .tabcontent {
-            display: none;
-            padding: 20px;
-        }
-
-        .tabcontent.show {
-            display: block;
-        }
-
-        /* 视频样式 */
-        video {
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-            margin: 0 auto;
-            display: block;
-        }
-    </style>
+    <!-- 引入自定义的样式表 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <!-- 使用 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-
-    <!-- 菜单栏 -->
-    <div class="menu-bar">
-        <a href="{{ url_for('index') }}">主页</a>
-        <a href="{{ url_for('user_login') }}">用户登录</a>
-        <a href="{{ url_for('login') }}">管理员登录</a>
-        <a href="{{ url_for('purchase') }}">购买</a>
-        <!-- 根据需要添加更多菜单项 -->
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="logo">MyWebsite</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">主页</a></li>
+            <li><a href="{{ url_for('user_login') }}">用户登录</a></li>
+            <li><a href="{{ url_for('login') }}">管理员登录</a></li>
+            <li><a href="{{ url_for('purchase') }}">购买</a></li>
+        </ul>
     </div>
+</nav>
+
+<!-- 主体内容 -->
+<div class="container main-content">
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">欢迎来到我们的网站</h1>
 
     <!-- 选项卡 -->
-    <div class="tab">
-        {% for video in videos %}
-            <button class="tablinks" onclick="openTab(event, '{{ video.id }}')">{{ video.title }}</button>
-        {% endfor %}
-    </div>
+    <div class="tabs">
+        <ul class="tab-links">
+            {% for video in videos %}
+                <li><a href="#{{ video.id }}" class="{% if loop.first %}active{% endif %}">{{ video.title }}</a></li>
+            {% endfor %}
+        </ul>
 
-    <!-- 选项卡内容 -->
-    {% for video in videos %}
-        <div id="{{ video.id }}" class="tabcontent">
-            <h3>{{ video.title }}</h3>
-            <video controls>
-                <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
-                您的浏览器不支持 HTML5 视频。
-            </video>
+        <!-- 选项卡内容 -->
+        <div class="tab-content">
+            {% for video in videos %}
+                <div id="{{ video.id }}" class="tab {% if loop.first %}active{% endif %}">
+                    <h2>{{ video.title }}</h2>
+                    <video controls>
+                        <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
+                        您的浏览器不支持 HTML5 视频。
+                    </video>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+    </div>
 
 </div>
 
-<!-- JavaScript，用于切换选项卡 -->
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2023 MyWebsite. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- JavaScript -->
 <script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-
-        // 隐藏所有选项卡内容
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].classList.remove('show');
-        }
-
-        // 移除所有选项卡的“active”类
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].classList.remove('active');
-        }
-
-        // 显示当前选项卡内容，并添加“active”类到对应的按钮
-        document.getElementById(tabName).classList.add('show');
-        evt.currentTarget.classList.add('active');
-    }
-
-    // 默认打开第一个选项卡
+    // 选项卡切换功能
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('.tablinks').click();
+        const tabLinks = document.querySelectorAll('.tab-links a');
+        const tabs = document.querySelectorAll('.tab-content .tab');
+
+        tabLinks.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // 移除所有激活状态
+                tabLinks.forEach(function (item) {
+                    item.classList.remove('active');
+                });
+                tabs.forEach(function (tab) {
+                    tab.classList.remove('active');
+                });
+
+                // 激活当前选项卡
+                this.classList.add('active');
+                const activeTab = document.querySelector(this.getAttribute('href'));
+                activeTab.classList.add('active');
+            });
+        });
     });
 </script>
 
