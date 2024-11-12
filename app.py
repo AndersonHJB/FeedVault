@@ -108,13 +108,16 @@ def user_login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, password):
-            session['user_logged_in'] = True
-            session['user_id'] = user.id
-            flash('用户登录成功', 'success')
-            return redirect(url_for('subscription'))
+            if user.expiration_date < datetime.now():
+                flash('您的账户已过期，请购买', 'warning')
+                return redirect(url_for('purchase'))
+            else:
+                session['user_logged_in'] = True
+                session['user_id'] = user.id
+                flash('用户登录成功', 'success')
+                return redirect(url_for('subscription'))
         else:
             flash('用户名或密码错误', 'danger')
-            return redirect(url_for('purchase'))  # 添加这一行
     return render_template('user_login.html')
 
 
@@ -136,7 +139,8 @@ def subscription():
         return "用户不存在", 404
 
     if user.expiration_date < datetime.now():
-        return "链接已失效", 404
+        flash('您的账户已过期，请购买', 'warning')
+        return redirect(url_for('purchase'))
 
     # 计算剩余天数
     remaining_days = (user.expiration_date - datetime.now()).days
