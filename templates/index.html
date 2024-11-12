@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>主页</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
-    <!-- 如果有单独的CSS文件，可以在这里链接 -->
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> -->
     <style>
         /* 菜单栏样式 */
         .menu-bar {
@@ -88,64 +86,50 @@
 
     <!-- 选项卡 -->
     <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'Video1')">视频1</button>
-        <button class="tablinks" onclick="openTab(event, 'Video2')">视频2</button>
-        <button class="tablinks" onclick="openTab(event, 'Video3')">视频3</button>
+        {% for video in videos %}
+            <button class="tablinks" onclick="openTab(event, '{{ video.id }}')">{{ video.title }}</button>
+        {% endfor %}
     </div>
 
     <!-- 选项卡内容 -->
-    <div id="Video1" class="tabcontent">
-        <h3>视频1</h3>
-        <video controls>
-            <source src="{{ url_for('static', filename='video/03-为什么代码看懂，却不会写？.mp4') }}" type="video/mp4">
-            您的浏览器不支持 HTML5 视频。
-        </video>
-    </div>
-
-    <div id="Video2" class="tabcontent">
-        <h3>视频2</h3>
-        <video controls>
-            <source src="{{ url_for('static', filename='video/03-为什么代码看懂，却不会写？.mp4') }}" type="video/mp4">
-            您的浏览器不支持 HTML5 视频。
-        </video>
-    </div>
-
-    <div id="Video3" class="tabcontent">
-        <h3>视频3</h3>
-        <video controls>
-            <source src="{{ url_for('static', filename='video/03-为什么代码看懂，却不会写？.mp4') }}" type="video/mp4">
-            您的浏览器不支持 HTML5 视频。
-        </video>
-    </div>
+    {% for video in videos %}
+        <div id="{{ video.id }}" class="tabcontent">
+            <h3>{{ video.title }}</h3>
+            <video controls>
+                <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
+                您的浏览器不支持 HTML5 视频。
+            </video>
+        </div>
+    {% endfor %}
 
 </div>
 
 <!-- JavaScript，用于切换选项卡 -->
 <script>
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
 
-    // 隐藏所有选项卡内容
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].classList.remove('show');
+        // 隐藏所有选项卡内容
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove('show');
+        }
+
+        // 移除所有选项卡的“active”类
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove('active');
+        }
+
+        // 显示当前选项卡内容，并添加“active”类到对应的按钮
+        document.getElementById(tabName).classList.add('show');
+        evt.currentTarget.classList.add('active');
     }
 
-    // 移除所有选项卡的“active”类
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove('active');
-    }
-
-    // 显示当前选项卡内容，并添加“active”类到对应的按钮
-    document.getElementById(tabName).classList.add('show');
-    evt.currentTarget.classList.add('active');
-}
-
-// 默认打开第一个选项卡
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('.tablinks').click();
-});
+    // 默认打开第一个选项卡
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('.tablinks').click();
+    });
 </script>
 
 </body>

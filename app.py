@@ -51,7 +51,13 @@ def admin_login_required(f):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # 定义视频列表
+    videos = [
+        {'id': 'Video1', 'title': '视频1', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+        {'id': 'Video2', 'title': '视频2', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+        {'id': 'Video3', 'title': '视频3', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+    ]
+    return render_template('index.html', videos=videos)
 
 
 @app.route('/admin', methods=['GET', 'POST'])
