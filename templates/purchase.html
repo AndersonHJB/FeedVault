@@ -5,16 +5,43 @@
     <title>购买VPN</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <style>
-        /* 添加自定义样式 */
-        .qr-code {
-            display: none;
+        /* 页面主体样式 */
+        .purchase-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-top: 20px;
         }
 
-        .qr-code img {
-            width: 200px;
-            height: 200px;
+        .purchase-container h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .purchase-container p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .purchase-container button {
+            padding: 14px 28px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .purchase-container button:hover {
+            background-color: #0056b3;
         }
 
         /* 弹窗样式 */
@@ -27,55 +54,110 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
         }
 
         .modal-content {
             background-color: #ffffff;
             margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 12px;
             width: 80%;
             max-width: 400px;
             text-align: center;
             position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .modal-content button {
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #218838;
         }
 
         .close {
             color: #aaa;
             position: absolute;
             right: 20px;
-            top: 10px;
-            font-size: 28px;
+            top: 15px;
+            font-size: 24px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
 
         .close:hover {
             color: #000;
         }
+
+        /* 二维码样式 */
+        .qr-code {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .qr-code img {
+            width: 250px;
+            height: 250px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-code p {
+            font-size: 16px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>购买VPN</h1>
-    <p>请购买我们的VPN服务，享受高速稳定的网络体验。</p>
-    <button id="purchaseButton">购买VPN</button>
+<div class="purchase-container">
+    <h1>购买VPN服务</h1>
+    <p>立即购买我们的VPN服务，享受高速、稳定、安全的网络体验。</p>
+    <button id="purchaseButton">立即购买</button>
+</div>
 
-    <!-- 弹窗 -->
-    <div id="purchaseModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>提示：付款时请在备注中填写您的微信号。</p>
-            <button id="confirmButton">确认</button>
-        </div>
+<!-- 弹窗 -->
+<div id="purchaseModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>请在付款备注中填写您的微信号，以便我们为您开通服务。</p>
+        <button id="confirmButton">确认并付款</button>
     </div>
+</div>
 
-    <!-- 二维码显示 -->
-    <div class="qr-code" id="qrCode">
-        <p>请使用微信扫描以下二维码进行付款：</p>
-        <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
-    </div>
+<!-- 二维码显示 -->
+<div class="qr-code" id="qrCode">
+    <p>请使用微信扫描以下二维码进行付款：</p>
+    <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
 </div>
 
 <script>
@@ -100,6 +182,7 @@
     confirmButton.onclick = function () {
         modal.style.display = "none";
         qrCode.style.display = "block";
+        window.scrollTo({top: qrCode.offsetTop, behavior: 'smooth'});
     }
 
     // 点击弹窗外部，关闭弹窗
