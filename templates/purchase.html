@@ -125,6 +125,23 @@
             margin-top: 20px;
         }
 
+        /* 新增的用户登录按钮样式 */
+        .login-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #5a6268;
+        }
+
         /* 动画效果 */
         @keyframes fadeIn {
             from {
@@ -149,6 +166,8 @@
         <div class="qr-code" id="qrCode">
             <p>请使用微信扫描以下二维码进行付款：</p>
             <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
+            <!-- 添加用户登录按钮 -->
+            <button class="login-button" onclick="location.href='{{ url_for('user_login') }}'">用户登录</button>
         </div>
     </div>
 </div>
