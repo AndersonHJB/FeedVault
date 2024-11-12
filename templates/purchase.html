@@ -108,8 +108,8 @@
         /* 二维码样式 */
         .qr-code {
             display: none;
-            text-align: center;
             margin-top: 30px;
+            text-align: center;
         }
 
         .qr-code img {
@@ -142,7 +142,15 @@
 <div class="purchase-container">
     <h1>购买VPN服务</h1>
     <p>立即购买我们的VPN服务，享受高速、稳定、安全的网络体验。</p>
-    <button id="purchaseButton">立即购买</button>
+    <!-- 将按钮和二维码容器包裹在一个div中 -->
+    <div id="actionArea">
+        <button id="purchaseButton">立即购买</button>
+        <!-- 二维码显示 -->
+        <div class="qr-code" id="qrCode">
+            <p>请使用微信扫描以下二维码进行付款：</p>
+            <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
+        </div>
+    </div>
 </div>
 
 <!-- 弹窗 -->
@@ -154,35 +162,30 @@
     </div>
 </div>
 
-<!-- 二维码显示 -->
-<div class="qr-code" id="qrCode">
-    <p>请使用微信扫描以下二维码进行付款：</p>
-    <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
-</div>
-
 <script>
     // 获取元素
     var modal = document.getElementById("purchaseModal");
-    var btn = document.getElementById("purchaseButton");
-    var span = document.getElementsByClassName("close")[0];
+    var purchaseButton = document.getElementById("purchaseButton");
+    var closeModal = document.getElementsByClassName("close")[0];
     var confirmButton = document.getElementById("confirmButton");
     var qrCode = document.getElementById("qrCode");
+    var actionArea = document.getElementById("actionArea");
 
     // 点击购买按钮，打开弹窗
-    btn.onclick = function () {
+    purchaseButton.onclick = function () {
         modal.style.display = "block";
     }
 
     // 点击关闭按钮，关闭弹窗
-    span.onclick = function () {
+    closeModal.onclick = function () {
         modal.style.display = "none";
     }
 
-    // 点击确认按钮，显示二维码
+    // 点击确认按钮，显示二维码，隐藏购买按钮
     confirmButton.onclick = function () {
         modal.style.display = "none";
+        purchaseButton.style.display = "none";
         qrCode.style.display = "block";
-        window.scrollTo({top: qrCode.offsetTop, behavior: 'smooth'});
     }
 
     // 点击弹窗外部，关闭弹窗
