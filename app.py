@@ -49,6 +49,10 @@ def admin_login_required(f):
 
     return decorated_function
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 
 @app.route('/admin', methods=['GET', 'POST'])
 @admin_login_required
