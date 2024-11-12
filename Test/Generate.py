@@ -37,4 +37,4 @@ if __name__ == '__main__':
     #     # print(path)
     #     generate_text(paths)
 
-    generate_text(data_dict['admin'])
+    generate_text(data_dict['subscription'])
