@@ -41,8 +41,8 @@ if __name__ == '__main__':
             'static/base.css',
         ],
     }
-    for paths in data_dict.values():
-        # print(path)
-        generate_text(paths, model='a+')
+    # for paths in data_dict.values():
+    #     # print(path)
+    #     generate_text(paths, model='a+')
 
-    # generate_text(data_dict['subscription'], model='w')
+    generate_text(data_dict['admin'], model='w')

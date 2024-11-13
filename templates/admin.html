@@ -40,6 +40,7 @@
         <table>
             <thead>
             <tr>
+                <th>序号</th>  <!-- 新增序号列 -->
                 <th>用户名</th>
                 <th>订阅链接</th>
                 <th>有效期</th>
@@ -47,8 +48,9 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in users %}
+            {% for index, user in users %}
                 <tr>
+                    <td>{{ index }}</td>  <!-- 显示序号 -->
                     <td>{{ user.username }}</td>
                     <td>{{ user.subscription_link }}</td>
                     <td>{{ user.expiration_date }}</td>

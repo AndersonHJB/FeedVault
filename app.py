@@ -96,7 +96,7 @@ def admin():
                 flash('有效期已更新', 'success')
 
     users = User.query.all()
-    return render_template('admin.html', users=users)
+    return render_template('admin.html', users=enumerate(users, start=1))
 
 
 @app.route('/login', methods=['GET', 'POST'])
