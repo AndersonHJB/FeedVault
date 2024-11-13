@@ -1,32 +1,17 @@
-/* 使用自定义字体 */
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    background-color: #f9f9f9;
-    color: #333;
-}
+/* index.css */
 
 /* 导航栏样式 */
 .navbar {
-    background-color: #fff;
-    border-bottom: 1px solid #eaeaea;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-}
-
-.navbar .container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
+    align-items: center;
+    padding: 20px 0;
 }
 
 .navbar .logo {
     font-size: 24px;
-    font-weight: 700;
-    color: #333;
+    font-weight: bold;
+    color: #1d1d1f;
     text-decoration: none;
 }
 
@@ -42,38 +27,32 @@ body {
 
 .navbar .nav-links a {
     text-decoration: none;
-    color: #555;
+    color: #007aff;
     font-weight: 500;
     transition: color 0.3s;
 }
 
 .navbar .nav-links a:hover {
-    color: #000;
+    color: #0056b3;
 }
 
-/* 主体内容样式 */
-.main-content {
-    padding: 100px 20px 60px;
-}
-
-.page-title {
+/* 页面标题样式 */
+h1 {
+    margin-top: 20px;
+    font-size: 32px;
+    color: #1d1d1f;
     text-align: center;
-    font-size: 36px;
-    margin-bottom: 50px;
-    color: #222;
 }
 
 /* 选项卡样式 */
 .tabs {
-    max-width: 800px;
-    margin: 0 auto;
+    margin-top: 40px;
 }
 
 .tab-links {
     list-style: none;
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
     padding: 0;
 }
 
@@ -84,16 +63,15 @@ body {
 .tab-links a {
     text-decoration: none;
     padding: 10px 20px;
-    background-color: #eaeaea;
-    color: #555;
-    border-radius: 5px;
+    background-color: #e5e5ea;
+    color: #333;
+    border-radius: 8px;
     transition: background-color 0.3s;
 }
 
 .tab-links a.active,
 .tab-links a:hover {
-    background-color: #d4d4d4;
-    color: #333;
+    background-color: #d1d1d6;
 }
 
 .tab-content .tab {
@@ -102,55 +80,50 @@ body {
 
 .tab-content .tab.active {
     display: block;
+    margin-top: 20px;
 }
 
 .tab-content h2 {
     text-align: center;
-    font-size: 28px;
+    font-size: 24px;
     margin-bottom: 20px;
-    color: #333;
+    color: #1d1d1f;
 }
 
 /* 视频样式 */
 video {
     width: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 页脚样式 */
 .footer {
-    background-color: #fff;
-    border-top: 1px solid #eaeaea;
-    padding: 20px 0;
-}
-
-.footer .container {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5ea;
     text-align: center;
 }
 
 .footer p {
-    color: #777;
+    color: #8e8e93;
     font-size: 14px;
-    margin: 0;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .navbar .nav-links {
-        display: none;
+        flex-direction: column;
+        width: 100%;
     }
 
-    .navbar .menu-toggle {
-        display: block;
-    }
-
-    .main-content {
-        padding: 80px 15px 40px;
-    }
-
-    .page-title {
-        font-size: 28px;
+    .navbar .nav-links li {
+        margin: 10px 0;
     }
 
     .tab-links {
