@@ -49,13 +49,14 @@ def admin_login_required(f):
 
     return decorated_function
 
+
 @app.route('/')
 def index():
-    # 定义视频列表
+    # 定义视频列表，新增 `video_source` 字段表示视频来源
     videos = [
-        {'id': 'Video1', 'title': '视频1', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
-        {'id': 'Video2', 'title': '视频2', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
-        {'id': 'Video3', 'title': '视频3', 'filename': '03-为什么代码看懂，却不会写？.mp4'},
+        {'id': 'Video1', 'title': '视频1', 'filename': '03-为什么代码看懂，却不会写？.mp4', 'https://github.com/AndersonHJB/AndersonHJB.github.io/releases/download/V0.0.3/05-2024.AI.AI.AI.2024._20241015164635_wx.mp4': 'url'},  # 本地视频
+        # {'id': 'Video2', 'title': '视频2', 'filename': 'https://gitee.com/huangjiabaoaiyc/img/releases/download/1.1.4/03-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%A3%E7%A0%81%E7%9C%8B%E6%87%82%EF%BC%8C%E5%8D%B4%E4%B8%8D%E4%BC%9A%E5%86%99%EF%BC%9F.mp4', 'source': 'url'},  # 外部视频
+        {'id': 'Video3', 'title': '视频3', 'filename': '03-为什么代码看懂，却不会写？.mp4', 'source': 'local'}  # 本地视频
     ]
     return render_template('index.html', videos=videos)
 
@@ -166,9 +167,11 @@ def subscription():
     return render_template('subscription.html', user=user, subscription_url=subscription_url,
                            remaining_days=remaining_days, qr_path=qr_path)
 
+
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     return render_template('purchase.html')
+
 
 @app.route('/subscription/<subscription_link>.yml')
 def get_subscription_file(subscription_link):

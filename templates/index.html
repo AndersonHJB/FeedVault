@@ -40,7 +40,11 @@
                 <div id="{{ video.id }}" class="tab {% if loop.first %}active{% endif %}">
                     <h2>{{ video.title }}</h2>
                     <video controls>
-                        <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
+                        {% if video.source == 'local' %}
+                            <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
+                        {% elif video.source == 'url' %}
+                            <source src="{{ video.filename }}" type="video/mp4">
+                        {% endif %}
                         您的浏览器不支持 HTML5 视频。
                     </video>
                 </div>
