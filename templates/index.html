@@ -39,7 +39,7 @@
             {% for video in videos %}
                 <div id="{{ video.id }}" class="tab {% if loop.first %}active{% endif %}">
                     <h2>{{ video.title }}</h2>
-                    <video controls>
+                    <video controls {% if video.source == 'url' %}crossorigin="anonymous"{% endif %}>
                         {% if video.source == 'local' %}
                             <source src="{{ url_for('static', filename='video/' + video.filename) }}" type="video/mp4">
                         {% elif video.source == 'url' %}
