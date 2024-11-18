@@ -88,7 +88,7 @@ proxies:
   port: 32820 
   tls: false 
   server: smart.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -104,13 +104,13 @@ proxies:
   port: 46580 
   tls: false 
   server: hk02.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
-    Host: broadcastlv.chat.bilibili.com 
+    Host: video-static-xdcdn.xiaodutv.com 
   ws-opts:
     path: / 
     headers:
-      Host: broadcastlv.chat.bilibili.com 
+      Host: video-static-xdcdn.xiaodutv.com 
   ws-path: / 
 - type: vmess
   alterId: 2 
@@ -120,20 +120,20 @@ proxies:
   port: 30581 
   tls: false 
   server: hk3.igcaches.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
-    Host: broadcastlv.chat.bilibili.com 
+    Host: bce.bdstatic.com 
   ws-opts:
     path: / 
     headers:
-      Host: broadcastlv.chat.bilibili.com 
+      Host: bce.bdstatic.com 
   ws-path: / 
 - type: trojan
   name: 'HK - 香港原生 - 04' 
-  server: appU1006862184932.api.steamgamepowered.net 
+  server: appU22582245719.api.steamgamepowered.net 
   port: 18180 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
-  sni: appU1006862184932.api.steamgamepowered.net 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
+  sni: appU22582245719.api.steamgamepowered.net 
 - type: vmess
   alterId: 2 
   cipher: auto
@@ -142,7 +142,7 @@ proxies:
   port: 32688 
   tls: false 
   server: hksk2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: v2.kwaicdn.com 
   ws-opts:
@@ -155,10 +155,10 @@ proxies:
   cipher: auto
   name: HK - 香港HKBN - 06 
   network: ws
-  port: 23800 
+  port: 25900 
   tls: false 
   server: hk6.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -174,7 +174,7 @@ proxies:
   port: 24800 
   tls: false 
   server: hkg4.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -190,7 +190,7 @@ proxies:
   port: 29680 
   tls: false 
   server: hgc3.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -206,7 +206,7 @@ proxies:
   port: 30980 
   tls: false 
   server: id1.hk.huawei-cacahe.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: id1.cloud.huawei.com 
   ws-opts:
@@ -215,20 +215,20 @@ proxies:
       Host: id1.cloud.huawei.com 
   ws-path: / 
 - type: vmess
-  alterId: 0 
+  alterId: 2 
   cipher: auto
   name: HK - 香港HKT - 10 
   network: ws
-  port: 32780 
+  port: 36249 
   tls: false 
-  server: hks10.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  server: hkss10.ifastcdncache.com 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
-    Host: broadcastlv.chat.bilibili.com 
+    Host: id2.cloud.huawei.com 
   ws-opts:
     path: / 
     headers:
-      Host: broadcastlv.chat.bilibili.com 
+      Host: id2.cloud.huawei.com 
   ws-path: / 
 - type: vmess
   alterId: 2 
@@ -238,26 +238,26 @@ proxies:
   port: 30776 
   tls: false 
   server: hkthome2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
-    Host: images-cn.ssl-images-amazon.com 
+    Host: webrtcpunch.video.qq.com 
   ws-opts:
     path: / 
     headers:
-      Host: images-cn.ssl-images-amazon.com 
+      Host: webrtcpunch.video.qq.com 
   ws-path: / 
 - type: trojan
   name: 'HK - 香港 - 12' 
-  server: nodeU1006862184932db.asia.huawei-cacahe.com 
+  server: nodeU22582245719db.asia.huawei-cacahe.com 
   port: 31288 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
-  sni: nodeU1006862184932db.asia.huawei-cacahe.com 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
+  sni: nodeU22582245719db.asia.huawei-cacahe.com 
 - type: trojan
   name: 'HK - 香港- 13' 
-  server: jsU1006862184932.edge.huawei-static.com 
+  server: jsU22582245719.edge.huawei-static.com 
   port: 39596 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
-  sni: jsU1006862184932.edge.huawei-static.com 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
+  sni: jsU22582245719.edge.huawei-static.com 
 - type: vmess
   alterId: 2 
   cipher: auto
@@ -266,7 +266,7 @@ proxies:
   port: 43980 
   tls: false 
   server: jpgithub.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -282,7 +282,7 @@ proxies:
   port: 26550 
   tls: false 
   server: jp3.igcaches.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -298,7 +298,7 @@ proxies:
   port: 26500 
   tls: false 
   server: jp-ty2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -310,25 +310,25 @@ proxies:
   name: 'JP - 日本原生' 
   server: kddi.ifastcdncache.com 
   port: 23153 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: kddi.ifastcdncache.com 
 - type: trojan
   name: 'JP - 日本05' 
-  server: ucacheU1006862184932.harmonyoscloudcdn.com 
+  server: ucacheU22582245719.harmonyoscloudcdn.com 
   port: 23565 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
-  sni: ucacheU1006862184932.harmonyoscloudcdn.com 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
+  sni: ucacheU22582245719.harmonyoscloudcdn.com 
 - type: trojan
   name: 'JP - 日本CN2 - 07' 
   server: jp5.cdn.igcaches.com 
   port: 25599 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: jp5.cdn.igcaches.com 
 - type: trojan
   name: 'JP - 日本大阪 - 08' 
   server: jp08.ifastcdncache.com 
   port: 39618 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: jp08.ifastcdncache.com 
 - type: vmess
   alterId: 2 
@@ -338,7 +338,7 @@ proxies:
   port: 33088 
   tls: false 
   server: uslos2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -353,8 +353,8 @@ proxies:
   network: ws
   port: 27781 
   tls: false 
-  server: cdnU1006862184932896.m.ihotelapis.net 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  server: cdnU22582245719896.m.ihotelapis.net 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -370,7 +370,7 @@ proxies:
   port: 23610 
   tls: false 
   server: newyork.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -386,7 +386,7 @@ proxies:
   port: 62443 
   tls: false 
   server: ussjc.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -402,7 +402,7 @@ proxies:
   port: 22976 
   tls: false 
   server: us05.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: p3-pc-weboff.byteimg.com 
   ws-opts:
@@ -418,7 +418,7 @@ proxies:
   port: 23876 
   tls: false 
   server: us6.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -430,7 +430,7 @@ proxies:
   name: 'US - 美国BGP' 
   server: uslos7.ifastcdncache.com 
   port: 23890 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: uslos7.ifastcdncache.com 
 - type: vmess
   alterId: 2 
@@ -440,7 +440,7 @@ proxies:
   port: 23650 
   tls: false 
   server: us8.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -453,10 +453,10 @@ proxies:
   cipher: auto
   name: TW - 台湾01 
   network: ws
-  port: 21600 
+  port: 21780 
   tls: false 
   server: tw2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -468,7 +468,7 @@ proxies:
   name: 'TW - 台湾彰化 - 02' 
   server: asia.ifastcdncache.com 
   port: 21750 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: asia.ifastcdncache.com 
 - type: vmess
   alterId: 2 
@@ -478,7 +478,7 @@ proxies:
   port: 30909 
   tls: false 
   server: tw3.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -490,19 +490,19 @@ proxies:
   name: 'TW - 台湾 04' 
   server: tw04.ifastcdncache.com 
   port: 25360 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: tw04.ifastcdncache.com 
 - type: trojan
   name: 'SG - 新加坡 01' 
   server: sg2.ifastcdncache.com 
   port: 23850 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: sg2.ifastcdncache.com 
 - type: trojan
   name: 'SG - 新加坡 02' 
   server: sg1.ifastcdncache.com 
   port: 24380 
-  password: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  password: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   sni: sg1.ifastcdncache.com 
 - type: vmess
   alterId: 2 
@@ -512,7 +512,7 @@ proxies:
   port: 24350 
   tls: false 
   server: sg3.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -528,13 +528,13 @@ proxies:
   port: 48080 
   tls: false 
   server: sg4.onnets1.xyz 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
-    Host: broadcastlv.chat.bilibili.com 
+    Host: ali2.a.yximgs.com 
   ws-opts:
     path: / 
     headers:
-      Host: broadcastlv.chat.bilibili.com 
+      Host: ali2.a.yximgs.com 
   ws-path: / 
 - type: vmess
   alterId: 2 
@@ -544,7 +544,7 @@ proxies:
   port: 25680 
   tls: false 
   server: ar.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -560,7 +560,7 @@ proxies:
   port: 24100 
   tls: false 
   server: de.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: kuaishou.com 
   ws-opts:
@@ -576,7 +576,7 @@ proxies:
   port: 36000 
   tls: false 
   server: de2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -592,7 +592,7 @@ proxies:
   port: 19080 
   tls: false 
   server: ca1.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -608,7 +608,7 @@ proxies:
   port: 19280 
   tls: false 
   server: au.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -624,7 +624,7 @@ proxies:
   port: 35900 
   tls: false 
   server: india.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: douyucdn.com 
   ws-opts:
@@ -640,7 +640,7 @@ proxies:
   port: 24180 
   tls: false 
   server: kr.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: s2-111422.kwimgs.com 
   ws-opts:
@@ -656,7 +656,7 @@ proxies:
   port: 34800 
   tls: false 
   server: kr2.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: console.huaweicloud.com 
   ws-opts:
@@ -672,7 +672,7 @@ proxies:
   port: 28000 
   tls: false 
   server: tr.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: broadcastlv.chat.bilibili.com 
   ws-opts:
@@ -688,7 +688,7 @@ proxies:
   port: 36102 
   tls: false 
   server: my.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: lf3-cdn-tos.bytescm.com 
   ws-opts:
@@ -704,7 +704,7 @@ proxies:
   port: 36700 
   tls: false 
   server: fr.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: lf3-cdn-tos.bytescm.com 
   ws-opts:
@@ -720,7 +720,7 @@ proxies:
   port: 21881 
   tls: false 
   server: uk.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: console.huaweicloud.com 
   ws-opts:
@@ -736,7 +736,7 @@ proxies:
   port: 23881 
   tls: false 
   server: uk3.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: console.huaweicloud.com 
   ws-opts:
@@ -752,7 +752,7 @@ proxies:
   port: 24300 
   tls: false 
   server: rumsk.ifastcdncache.com 
-  uuid: 6d9041c1-f2ea-4111-ac54-279278a465d1 
+  uuid: 42cadaa1-f47d-4c59-8380-0de19cc9e8b0 
   ws-headers:
     Host: bilibili.com 
   ws-opts:
@@ -762,10 +762,10 @@ proxies:
   ws-path: /  
 - type: http
   name: 'ChatGPT & AI 专线' 
-  server: U1006862184932.edge.onetcdn.com 
+  server: U22582245719.edge.onetcdn.com 
   port: 37810 
-  username: x9527_1752936437_1432803776@qq.com 
-  password: 28c33e04c48d01d7bbc68a6f77204eb1 
+  username: x9527_1749016064_aiyuechuang@gmail.com 
+  password: 0c3752269fe31d31e7551677f558f8cd 
   tls: true
 
 proxy-groups:
@@ -1276,9 +1276,18 @@ rules:
  - DOMAIN-SUFFIX,claude.ai,openAI
  - DOMAIN-SUFFIX,anthropic.com,openAI
  - DOMAIN-SUFFIX,bard.google.com,openAI
- - DOMAIN-SUFFIX,gemini.google.com,openAI
+ - DOMAIN-SUFFIX,gemini.googleapis.com,openAI
+ - DOMAIN-SUFFIX,aida.googleapis.com,openAI
  - DOMAIN-SUFFIX,oaistatic.com,openAI
  - DOMAIN-SUFFIX,oaiusercontent.com,openAI
+ - DOMAIN-SUFFIX,challenges.cloudflare.com,openAI
+ - DOMAIN-SUFFIX,client-api.arkoselabs.com,openAI
+ - DOMAIN-SUFFIX,events.statsigapi.net,openAI
+ - DOMAIN-SUFFIX,featuregates.org,openAI
+ - DOMAIN-SUFFIX,identrust.com,openAI
+ - DOMAIN-SUFFIX,intercom.io,openAI
+ - DOMAIN-SUFFIX,intercomcdn.com,openAI
+ - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,openAI
  - DOMAIN-KEYWORD,1drv,Ⓜ️ 微软服务
  - DOMAIN-KEYWORD,microsoft,Ⓜ️ 微软服务
  - DOMAIN-SUFFIX,aadrm.com,Ⓜ️ 微软服务
