@@ -10,8 +10,6 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
-app.config['SERVER_NAME'] = 'fv.bornforthis.cn'
-PREFERRED_URL_SCHEME = 'https'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
@@ -160,7 +158,7 @@ def subscription():
 
     # 生成用户的专属订阅链接
     subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True)
-    print("subscription_url", subscription_url)
+    # print("subscription_url", subscription_url)
     # 生成订阅链接二维码
     qr = qrcode.make(subscription_url)
     qr_path = f"static/qrcodes/{user.subscription_link}.png"
