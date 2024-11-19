@@ -193,4 +193,5 @@ if __name__ == '__main__':
     os.makedirs('static/qrcodes', exist_ok=True)
     db.create_all()
     # app.run(debug=True)
-    app.run()
+    # app.run()
+    app.run(host="0.0.0.0", port=8990)
