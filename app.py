@@ -173,7 +173,7 @@ def purchase():
     return render_template('purchase.html')
 
 
-@app.route('/subscription/<subscription_link>.yml')
+@app.route('/subscription/<subscription_link>.yaml')
 def get_subscription_file(subscription_link):
     # 验证订阅链接是否有效
     user = User.query.filter_by(subscription_link=subscription_link).first()
