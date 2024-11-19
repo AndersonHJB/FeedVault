@@ -158,7 +158,7 @@ def subscription():
 
     # 生成用户的专属订阅链接
     subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True)
-
+    print("subscription_url", subscription_url)
     # 生成订阅链接二维码
     qr = qrcode.make(subscription_url)
     qr_path = f"static/qrcodes/{user.subscription_link}.png"
