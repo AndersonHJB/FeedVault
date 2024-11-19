@@ -10,6 +10,8 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
+app.config['SERVER_NAME'] = 'fv.bornforthis.cn'
+PREFERRED_URL_SCHEME = 'https'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
