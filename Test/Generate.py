@@ -24,22 +24,22 @@ if __name__ == '__main__':
             "templates/index.html",
             "static/index.css"
         ],
-        # 'admin': [
-        #     'templates/admin.html',
-        #     'static/admin.css',
-        # ],
-        # 'login': [
-        #     'templates/login.html',
-        #     'templates/user_login.html',
-        #     'static/login.css',
-        # ],
-        # 'subscription': [
-        #     'templates/subscription.html',
-        #     'static/subscription.css',
-        # ],
-        # 'other': [
-        #     'static/base.css',
-        # ],
+        'admin': [
+            'templates/admin.html',
+            'static/admin.css',
+        ],
+        'login': [
+            'templates/login.html',
+            'templates/user_login.html',
+            'static/login.css',
+        ],
+        'subscription': [
+            'templates/subscription.html',
+            'static/subscription.css',
+        ],
+        'other': [
+            'static/base.css',
+        ],
     }
     for paths in data_dict.values():
         # print(path)
