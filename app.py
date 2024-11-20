@@ -181,7 +181,7 @@ def get_subscription_file(subscription_link):
         return "订阅链接已失效或无效", 404
 
     # 返回本地的 YAML 文件
-    return send_file('iggfeed.yaml', mimetype='application/x-yaml')
+    return send_file('AI悦创·编程1v1.yaml', mimetype='application/x-yaml')
 
 
 def generate_subscription_link():
