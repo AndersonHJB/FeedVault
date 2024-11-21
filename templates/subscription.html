@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>订阅信息</title>
     <link rel="icon" href="https://bornforthis.cn/favicon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         /* 优化页面布局的额外样式 */
@@ -12,7 +13,7 @@
             max-width: 600px;
             margin: 50px auto;
             padding: 30px;
-            background-color: #f9f9f9;
+            background-color: #ffffff; {# #f9f9f9 #}
             border-radius: 10px;
             text-align: center;
         }
@@ -102,33 +103,45 @@
     </style>
 </head>
 <body>
-<div class="subscription-container">
-    <h1>您的订阅信息</h1>
+<div class="container">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="logo">AI悦创·编程1v1</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">主页</a></li>
+            <li><a href="{{ url_for('user_login') }}">用户登录</a></li>
+            <li><a href="{{ url_for('login') }}">管理员登录</a></li>
+            <li><a href="{{ url_for('purchase') }}">购买</a></li>
+        </ul>
+    </nav>
+    <div class="subscription-container">
+        <h1>您的订阅信息</h1>
 
-    <!-- 剩余天数显示 -->
-    <div class="remaining-days">
-        有效期剩余：<strong>{{ remaining_days }} 天</strong>
-    </div>
+        <!-- 剩余天数显示 -->
+        <div class="remaining-days">
+            有效期剩余：<strong>{{ remaining_days }} 天</strong>
+        </div>
 
-    <!-- 订阅链接和复制按钮 -->
-    <div class="subscription-link">
-        <a href="{{ subscription_url }}" target="_blank">{{ subscription_url }}</a>
-        <button onclick="copyToClipboard('{{ subscription_url }}')">复制链接</button>
-        <!-- 复制成功提示 -->
-        <div id="copySuccess" class="copy-success">复制成功</div>
-    </div>
+        <!-- 订阅链接和复制按钮 -->
+        <div class="subscription-link">
+            <a href="{{ subscription_url }}" target="_blank">{{ subscription_url }}</a>
+            <button onclick="copyToClipboard('{{ subscription_url }}')">复制链接</button>
+            <!-- 复制成功提示 -->
+            <div id="copySuccess" class="copy-success">复制成功</div>
+        </div>
 
-    <!-- 二维码显示 -->
-    <div class="qr-code">
-        <img src="{{ url_for('static', filename='qrcodes/' + user.subscription_link + '.png') }}" alt="订阅二维码">
-        <!-- 添加二维码标签 -->
-        <div class="qr-code-label">Shadowrocket订阅码</div>
-    </div>
+        <!-- 二维码显示 -->
+        <div class="qr-code">
+            <img src="{{ url_for('static', filename='qrcodes/' + user.subscription_link + '.png') }}" alt="订阅二维码">
+            <!-- 添加二维码标签 -->
+            <div class="qr-code-label">Shadowrocket订阅码</div>
+        </div>
 
-    <!-- 退出登录和购买页面链接 -->
-    <div class="link-container">
-        <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
-        <a href="purchase" class="purchase-link">购买页面</a>
+        <!-- 退出登录和购买页面链接 -->
+        <div class="link-container">
+            <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
+            <a href="purchase" class="purchase-link">购买页面</a>
+        </div>
     </div>
 </div>
 
