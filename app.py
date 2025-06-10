@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail, Message
+from flask_apscheduler import APScheduler
 from datetime import datetime, timedelta
 import os
 import random
@@ -12,6 +14,9 @@ app = Flask(__name__)
 app.config.from_object('config.Config')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+mail = Mail(app)
+scheduler = APScheduler()
+scheduler.init_app(app)
 
 
 # 用户模型
@@ -50,6 +55,49 @@ def admin_login_required(f):
     return decorated_function
 
 
+# --------------------------------------------------
+# 定时任务：发送到期用户列表给管理员
+# --------------------------------------------------
+def send_expired_users_email():
+    """
+    每次执行时，将所有已到期用户列表一次性发给管理员邮箱。
+    定时由 APScheduler 驱动，不影响现有业务逻辑。
+    """
+    with app.app_context():
+        expired_users = User.query.filter(
+            User.expiration_date <= datetime.now()
+        ).all()
+
+        if not expired_users:
+            # 没有过期用户就不发送邮件
+            return
+
+        # 邮件正文
+        lines = [
+            f"{u.username} | 过期于 {u.expiration_date.strftime('%Y-%m-%d %H:%M:%S')}"
+            for u in expired_users
+        ]
+        body = "以下用户已过期：\n\n" + "\n".join(lines)
+
+        msg = Message(
+            subject=f"到期用户报告（{len(expired_users)} 人）",
+            recipients=[app.config["ADMIN_EMAIL"]],
+            body=body
+        )
+        mail.send(msg)
+
+
+# --------------------------------------------------
+# 注册定时任务：每 15 分钟执行一次
+# 如需改成每天/每小时，请调整 trigger
+# --------------------------------------------------
+scheduler.add_job(
+    id="expired_users_email_job",
+    func=send_expired_users_email,
+    trigger="interval",
+    minutes=15
+)
+scheduler.start()
 @app.route('/')
 def index():
     # 定义视频列表，新增 `video_source` 字段表示视频来源
