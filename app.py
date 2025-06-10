@@ -95,7 +95,10 @@ scheduler.add_job(
     id="expired_users_email_job",
     func=send_expired_users_email,
     trigger="interval",
-    minutes=15
+    # trigger="cron",
+    # hour=10,           # 10:00
+    minutes=30,
+    timezone="Asia/Shanghai"   # 若服务器在国内；在美西用 "America/Los_Angeles"
 )
 scheduler.start()
 @app.route('/')
