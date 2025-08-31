@@ -208,7 +208,7 @@ def subscription():
     remaining_days = (user.expiration_date - datetime.now()).days
 
     # 生成用户的专属订阅链接
-    subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True)
+    subscription_url = url_for('get_subscription_file', subscription_link=user.subscription_link, _external=True, _scheme='https')
     # print("subscription_url", subscription_url)
     # 生成订阅链接二维码
     qr = qrcode.make(subscription_url)
