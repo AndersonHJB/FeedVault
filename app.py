@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
@@ -307,7 +307,13 @@ def get_subscription_file(subscription_link):
     db.session.commit()
 
     # 返回本地的 YAML 文件
-    return send_file(SUBSCRIPTION_FILE_PATH, mimetype='application/x-yaml')
+    response = make_response(send_file(SUBSCRIPTION_FILE_PATH, mimetype='application/x-yaml'))
+
+    # 让 Clash/Meta 可读取用户专属订阅到期时间（Unix 秒级时间戳）。
+    expire_ts = int(user.expiration_date.timestamp())
+    response.headers['subscription-userinfo'] = f"upload=0; download=0; total=0; expire={expire_ts}"
+
+    return response
 
 
 def generate_subscription_link():
