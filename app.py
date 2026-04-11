@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from flask_apscheduler import APScheduler
+from sqlalchemy import inspect, text
 from datetime import datetime, timedelta
 import os
 import random
@@ -18,6 +19,11 @@ mail = Mail(app)
 scheduler = APScheduler()
 scheduler.init_app(app)
 
+SUBSCRIPTION_FILE_NAME = 'AI悦创·编程1v1.yaml'
+SUBSCRIPTION_FILE_PATH = os.path.join(app.root_path, SUBSCRIPTION_FILE_NAME)
+SUBSCRIPTION_REFRESH_LIMIT = 2
+SUBSCRIPTION_REFRESH_WINDOW_DAYS = 7
+
 
 # 用户模型
 class User(db.Model):
@@ -26,6 +32,9 @@ class User(db.Model):
     password = db.Column(db.String(150), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=True)
     subscription_link = db.Column(db.String(200), nullable=True, unique=True)
+    yaml_version_mtime = db.Column(db.Integer, nullable=True)
+    yaml_refresh_window_start = db.Column(db.DateTime, nullable=True)
+    yaml_refresh_count = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -53,6 +62,44 @@ def admin_login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def ensure_database_schema():
+    """兼容已有数据库，自动补齐新增字段。"""
+    db.create_all()
+    inspector = inspect(db.engine)
+    existing_columns = {column["name"] for column in inspector.get_columns(User.__tablename__)}
+    alter_statements = []
+
+    if "yaml_version_mtime" not in existing_columns:
+        alter_statements.append("ALTER TABLE user ADD COLUMN yaml_version_mtime INTEGER")
+    if "yaml_refresh_window_start" not in existing_columns:
+        alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_window_start DATETIME")
+    if "yaml_refresh_count" not in existing_columns:
+        alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_count INTEGER DEFAULT 0")
+
+    for stmt in alter_statements:
+        db.session.execute(text(stmt))
+    if alter_statements:
+        db.session.commit()
+
+
+def get_subscription_file_mtime():
+    try:
+        return int(os.path.getmtime(SUBSCRIPTION_FILE_PATH))
+    except OSError:
+        return None
+
+
+def reset_user_refresh_window(user, yaml_mtime):
+    """配置文件更新时，按该版本更新时间重置 7 天窗口与次数。"""
+    user.yaml_version_mtime = yaml_mtime
+    user.yaml_refresh_window_start = datetime.fromtimestamp(yaml_mtime)
+    user.yaml_refresh_count = 0
+
+
+with app.app_context():
+    ensure_database_schema()
 
 
 # --------------------------------------------------
@@ -231,8 +278,36 @@ def get_subscription_file(subscription_link):
     if not user or user.expiration_date < datetime.now():
         return "订阅链接已失效或无效", 404
 
+    yaml_mtime = get_subscription_file_mtime()
+    if yaml_mtime is None:
+        return "订阅配置文件不存在", 500
+
+    now = datetime.now()
+    has_state_update = False
+
+    # 配置文件一更新，就重置该用户的 7 天窗口与请求次数。
+    if user.yaml_version_mtime != yaml_mtime:
+        reset_user_refresh_window(user, yaml_mtime)
+        has_state_update = True
+
+    window_start = user.yaml_refresh_window_start or datetime.fromtimestamp(yaml_mtime)
+    window_end = window_start + timedelta(days=SUBSCRIPTION_REFRESH_WINDOW_DAYS)
+    if now > window_end:
+        if has_state_update:
+            db.session.commit()
+        return f"当前配置版本的刷新窗口已结束（{SUBSCRIPTION_REFRESH_WINDOW_DAYS}天），请等待配置更新后重置", 429
+
+    current_count = user.yaml_refresh_count or 0
+    if current_count >= SUBSCRIPTION_REFRESH_LIMIT:
+        if has_state_update:
+            db.session.commit()
+        return f"当前配置版本的刷新次数已达上限（{SUBSCRIPTION_REFRESH_LIMIT}次），请等待配置更新后重置", 429
+
+    user.yaml_refresh_count = current_count + 1
+    db.session.commit()
+
     # 返回本地的 YAML 文件
-    return send_file('AI悦创·编程1v1.yaml', mimetype='application/x-yaml')
+    return send_file(SUBSCRIPTION_FILE_PATH, mimetype='application/x-yaml')
 
 
 def generate_subscription_link():
@@ -242,7 +317,8 @@ def generate_subscription_link():
 if __name__ == '__main__':
     # 创建静态目录用于存储二维码图像
     os.makedirs('static/qrcodes', exist_ok=True)
-    db.create_all()
+    with app.app_context():
+        ensure_database_schema()
     # app.run(debug=True)
     # app.run()
     app.run(host="0.0.0.0", port=8990)
