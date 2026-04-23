@@ -67,7 +67,7 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.subscription_link }}</td>
                     <td>{{ user.expiration_date }}</td>
-                    <td>{{ user.yaml_refresh_count or 0 }}</td>
+                    <td class="refresh-count">{{ user.yaml_refresh_count if user.yaml_refresh_count is not none else 0 }} 次</td>
                     <td>
                         <form method="post" class="inline-form limit-form">
                             <input type="hidden" name="set_refresh_limit" value="{{ user.id }}">
@@ -88,7 +88,7 @@
                         </form>
 
                         <!-- 延长有效期表单 -->
-                        <form method="post" class="inline-form">
+                        <form method="post" class="inline-form extend-form">
                             <input type="hidden" name="extend_expiration" value="{{ user.id }}">
                             <input type="number" name="additional_days" value="0" class="days-input">
                             <button type="submit">延长</button>
@@ -111,6 +111,40 @@
 </div>
 
 <script>
+    const PAGE_SCROLL_KEY = "admin-page-scroll-y";
+    const TABLE_SCROLL_KEY = "admin-table-scroll";
+    const tableContainer = document.querySelector(".table-container");
+
+    const savedPageScrollY = sessionStorage.getItem(PAGE_SCROLL_KEY);
+    if (savedPageScrollY !== null) {
+        window.scrollTo(0, parseInt(savedPageScrollY, 10) || 0);
+        sessionStorage.removeItem(PAGE_SCROLL_KEY);
+    }
+
+    const savedTableScroll = sessionStorage.getItem(TABLE_SCROLL_KEY);
+    if (savedTableScroll && tableContainer) {
+        try {
+            const parsed = JSON.parse(savedTableScroll);
+            tableContainer.scrollTop = parsed.top || 0;
+            tableContainer.scrollLeft = parsed.left || 0;
+        } catch (e) {
+            console.error("恢复表格滚动位置失败:", e);
+        }
+        sessionStorage.removeItem(TABLE_SCROLL_KEY);
+    }
+
+    document.querySelectorAll("form[method='post']").forEach((form) => {
+        form.addEventListener("submit", () => {
+            sessionStorage.setItem(PAGE_SCROLL_KEY, String(window.scrollY));
+            if (tableContainer) {
+                sessionStorage.setItem(TABLE_SCROLL_KEY, JSON.stringify({
+                    top: tableContainer.scrollTop,
+                    left: tableContainer.scrollLeft
+                }));
+            }
+        });
+    });
+
     // 获取对话框元素
     const modal = document.getElementById("addUserModal");
     const addUserButton = document.getElementById("addUserButton");

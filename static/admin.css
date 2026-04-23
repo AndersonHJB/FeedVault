@@ -66,6 +66,13 @@ tbody tr:hover {
     background: rgba(235, 247, 244, 0.7);
 }
 
+.refresh-count {
+    font-weight: 700;
+    color: #0f766e;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
 .inline-form {
     display: inline-flex;
     align-items: center;
@@ -76,7 +83,9 @@ tbody tr:hover {
 }
 
 .inline-form input[type="number"] {
-    min-width: 64px;
+    width: 84px;
+    min-width: 84px;
+    flex: 0 0 84px;
     height: 36px;
     padding: 6px 8px;
     margin: 0;
@@ -84,11 +93,15 @@ tbody tr:hover {
 }
 
 .limit-form input[type="number"] {
-    width: 82px;
+    width: 92px;
+    min-width: 92px;
+    flex-basis: 92px;
 }
 
-.days-input {
-    width: 68px;
+.inline-form .days-input {
+    width: 72px;
+    min-width: 72px;
+    flex-basis: 72px;
 }
 
 .inline-form button {
@@ -160,11 +173,13 @@ tbody tr:hover {
         margin-right: 0;
     }
 
-    .inline-form button {
+    .inline-form input[type="number"] {
         width: 100%;
+        min-width: 0;
+        flex: 1 1 auto;
     }
 
-    .limit-form input[type="number"] {
+    .inline-form button {
         width: 100%;
     }
 }
