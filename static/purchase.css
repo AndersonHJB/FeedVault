@@ -1,0 +1,146 @@
+/* purchase.css */
+
+.purchase-container {
+    width: min(620px, 100%);
+    margin: 4vh auto;
+    padding: clamp(20px, 3vw, 34px);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(236, 247, 243, 0.92));
+    border-radius: 20px;
+    border: 1px solid rgba(18, 40, 36, 0.15);
+    box-shadow: 0 18px 36px rgba(18, 40, 36, 0.14);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.purchase-container::after {
+    content: "";
+    position: absolute;
+    inset: auto -22% -58% auto;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.2), rgba(249, 115, 22, 0));
+    pointer-events: none;
+}
+
+.purchase-container h1 {
+    margin-bottom: 16px;
+}
+
+.purchase-container p {
+    margin: 10px auto;
+    color: #2b554c;
+    font-size: 1rem;
+    width: min(420px, 100%);
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    background: rgba(255, 255, 255, 0.88);
+}
+
+#actionArea {
+    margin-top: 18px;
+}
+
+#purchaseButton {
+    min-width: 160px;
+}
+
+.qr-code {
+    display: none;
+    margin-top: 16px;
+    padding: 16px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(18, 40, 36, 0.12);
+    background: #ffffff;
+}
+
+.qr-code img {
+    width: min(260px, 72vw);
+    height: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(18, 40, 36, 0.14);
+    box-shadow: 0 12px 22px rgba(18, 40, 36, 0.18);
+}
+
+.qr-code p {
+    border: none;
+    padding: 0;
+    margin: 0 auto 12px;
+    background: transparent;
+    width: auto;
+    color: #365a53;
+}
+
+.login-button {
+    margin-top: 14px;
+    background: linear-gradient(145deg, #f97316, #ea580c);
+}
+
+.login-button:hover {
+    box-shadow: 0 10px 20px rgba(194, 65, 12, 0.28);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(9, 32, 29, 0.45);
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background: linear-gradient(155deg, #ffffff, #f4faf8);
+    margin: 12vh auto;
+    padding: 24px;
+    border-radius: 16px;
+    width: min(92%, 460px);
+    text-align: center;
+    border: 1px solid rgba(18, 40, 36, 0.16);
+    position: relative;
+}
+
+.modal-content p {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 14px 0 18px;
+    width: auto;
+    color: #355950;
+}
+
+#confirmButton {
+    background: linear-gradient(145deg, #0f766e, #0b5f58);
+}
+
+.close {
+    color: #64817a;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #0b4f49;
+}
+
+@media (max-width: 640px) {
+    .purchase-container {
+        margin: 1vh auto;
+    }
+
+    .purchase-container p {
+        font-size: 0.94rem;
+    }
+
+    #purchaseButton,
+    #confirmButton,
+    .login-button {
+        width: 100%;
+    }
+}

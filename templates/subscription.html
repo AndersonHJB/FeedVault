@@ -7,104 +7,9 @@
     <link rel="icon" href="https://bornforthis.cn/favicon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        /* 优化页面布局的额外样式 */
-        .subscription-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #ffffff; {# #f9f9f9 #}
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .subscription-container h1 {
-            margin-bottom: 30px;
-            font-size: 2em;
-            color: #333;
-        }
-
-        .subscription-link {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .subscription-link a {
-            word-break: break-all;
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        .subscription-link a:hover {
-            text-decoration: underline;
-        }
-
-        .subscription-link button {
-            margin-left: 10px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .remaining-days {
-            font-size: 1.2em;
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        .qr-code img {
-            width: 200px;
-            height: 200px;
-            margin-bottom: 10px; /* 调整间距 */
-        }
-
-        .qr-code-label {
-            font-size: 1em;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        /* 链接容器样式 */
-        .link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .link-container a {
-            color: #999;
-            text-decoration: none;
-            font-size: 14px;
-            margin: 0 10px;
-        }
-
-        .link-container a:hover {
-            color: #666;
-        }
-
-        .copy-success {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #28a745;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
-    <!-- 导航栏 -->
     <nav class="navbar">
         <a href="{{ url_for('index') }}" class="logo">AI悦创·编程1v1</a>
         <ul class="nav-links">
@@ -117,27 +22,21 @@
     <div class="subscription-container">
         <h1>您的订阅信息</h1>
 
-        <!-- 剩余天数显示 -->
         <div class="remaining-days">
             有效期剩余：<strong>{{ remaining_days }} 天</strong>
         </div>
 
-        <!-- 订阅链接和复制按钮 -->
         <div class="subscription-link">
             <a href="{{ subscription_url }}" target="_blank">{{ subscription_url }}</a>
             <button onclick="copyToClipboard('{{ subscription_url }}')">复制链接</button>
-            <!-- 复制成功提示 -->
             <div id="copySuccess" class="copy-success">复制成功</div>
         </div>
 
-        <!-- 二维码显示 -->
         <div class="qr-code">
             <img src="{{ url_for('static', filename='qrcodes/' + user.subscription_link + '.png') }}" alt="订阅二维码">
-            <!-- 添加二维码标签 -->
             <div class="qr-code-label">Shadowrocket订阅码</div>
         </div>
 
-        <!-- 退出登录和购买页面链接 -->
         <div class="link-container">
             <a href="{{ url_for('logout') }}" class="logout-link">退出登录</a>
             <a href="purchase" class="purchase-link">购买页面</a>
@@ -148,12 +47,10 @@
 <script>
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            // 显示“复制成功”提示
             const copySuccess = document.getElementById("copySuccess");
             copySuccess.style.opacity = "1";
             copySuccess.style.visibility = "visible";
 
-            // 2秒后隐藏提示
             setTimeout(() => {
                 copySuccess.style.opacity = "0";
                 copySuccess.style.visibility = "hidden";

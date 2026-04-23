@@ -2,18 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>主页</title>
-    <!-- 引入基础样式表 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
-    <!-- 引入自定义的样式表 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    <!-- 使用 Google Fonts -->
-{#    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">#}
     <link rel="icon" href="https://bornforthis.cn/favicon.ico">
 </head>
 <body>
 <div class="container">
-    <!-- 导航栏 -->
     <nav class="navbar">
         <a href="{{ url_for('index') }}" class="logo">AI悦创·编程1v1</a>
         <ul class="nav-links">
@@ -24,10 +20,8 @@
         </ul>
     </nav>
 
-    <!-- 页面标题 -->
     <h1>欢迎来到我们的网站</h1>
 
-    <!-- 选项卡 -->
     <div class="tabs">
         <ul class="tab-links">
             {% for video in videos %}
@@ -35,7 +29,6 @@
             {% endfor %}
         </ul>
 
-        <!-- 选项卡内容 -->
         <div class="tab-content">
             {% for video in videos %}
                 <div id="{{ video.id }}" class="tab {% if loop.first %}active{% endif %}">
@@ -53,16 +46,13 @@
         </div>
     </div>
 
-    <!-- 页脚 -->
     <footer class="footer">
         <p>&copy; 2024 AI悦创编程1v1. All Rights Reserved.</p>
         <p><a href="https://aiyc.lanzouq.com/b0foww2gh" target="_blank">安装包下载，密码：bi7x</a></p>
     </footer>
 </div>
 
-<!-- JavaScript -->
 <script>
-    // 选项卡切换功能
     document.addEventListener('DOMContentLoaded', function () {
         const tabLinks = document.querySelectorAll('.tab-links a');
         const tabs = document.querySelectorAll('.tab-content .tab');
@@ -71,7 +61,6 @@
             link.addEventListener('click', function (e) {
                 e.preventDefault();
 
-                // 移除所有激活状态
                 tabLinks.forEach(function (item) {
                     item.classList.remove('active');
                 });
@@ -79,7 +68,6 @@
                     tab.classList.remove('active');
                 });
 
-                // 激活当前选项卡
                 this.classList.add('active');
                 const activeTab = document.querySelector(this.getAttribute('href'));
                 activeTab.classList.add('active');

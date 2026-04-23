@@ -2,162 +2,11 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>购买VPN</title>
     <link rel="icon" href="https://bornforthis.cn/favicon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
-    <style>
-        /* 页面主体样式 */
-        .purchase-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .purchase-container h1 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .purchase-container p {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .purchase-container button {
-            padding: 14px 28px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .purchase-container button:hover {
-            background-color: #0056b3;
-        }
-
-        /* 弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-
-        .modal-content {
-            background-color: #ffffff;
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .modal-content button {
-            padding: 12px 24px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #28a745;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal-content button:hover {
-            background-color: #218838;
-        }
-
-        .close {
-            color: #aaa;
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close:hover {
-            color: #000;
-        }
-
-        /* 二维码样式 */
-        .qr-code {
-            display: none;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .qr-code img {
-            width: 250px;
-            height: 250px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .qr-code p {
-            font-size: 16px;
-            color: #555;
-            margin-top: 20px;
-        }
-
-        /* 新增的用户登录按钮样式 */
-        .login-button {
-            margin-top: 20px;
-            padding: 12px 24px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #6c757d;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .login-button:hover {
-            background-color: #5a6268;
-        }
-
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='purchase.css') }}">
 </head>
 <body>
 <div class="purchase-container">
@@ -168,20 +17,16 @@
     <p>3. ￥114.00 - 180天</p>
     <p>4. ￥228.00 - 365天</p>
 
-    <!-- 将按钮和二维码容器包裹在一个div中 -->
     <div id="actionArea">
         <button id="purchaseButton">立即购买</button>
-        <!-- 二维码显示 -->
         <div class="qr-code" id="qrCode">
             <p>请使用微信扫描以下二维码进行付款：</p>
             <img src="https://blog.bornforthis.cn/img/me/img_1.png" alt="付款二维码">
-            <!-- 添加用户登录按钮 -->
             <button class="login-button" onclick="location.href='{{ url_for('user_login') }}'">用户登录</button>
         </div>
     </div>
 </div>
 
-<!-- 弹窗 -->
 <div id="purchaseModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -191,7 +36,6 @@
 </div>
 
 <script>
-    // 获取元素
     var modal = document.getElementById("purchaseModal");
     var purchaseButton = document.getElementById("purchaseButton");
     var closeModal = document.getElementsByClassName("close")[0];
@@ -199,24 +43,20 @@
     var qrCode = document.getElementById("qrCode");
     var actionArea = document.getElementById("actionArea");
 
-    // 点击购买按钮，打开弹窗
     purchaseButton.onclick = function () {
         modal.style.display = "block";
     }
 
-    // 点击关闭按钮，关闭弹窗
     closeModal.onclick = function () {
         modal.style.display = "none";
     }
 
-    // 点击确认按钮，显示二维码，隐藏购买按钮
     confirmButton.onclick = function () {
         modal.style.display = "none";
         purchaseButton.style.display = "none";
         qrCode.style.display = "block";
     }
 
-    // 点击弹窗外部，关闭弹窗
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
