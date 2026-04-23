@@ -55,6 +55,8 @@
                 <th>用户名</th>
                 <th>订阅链接</th>
                 <th>有效期</th>
+                <th>已更新次数</th>
+                <th>最大次数</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -65,18 +67,37 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.subscription_link }}</td>
                     <td>{{ user.expiration_date }}</td>
+                    <td>{{ user.yaml_refresh_count or 0 }}</td>
+                    <td>
+                        <form method="post" class="inline-form limit-form">
+                            <input type="hidden" name="set_refresh_limit" value="{{ user.id }}">
+                            <input type="number" name="custom_refresh_limit"
+                                   value="{{ user.yaml_refresh_limit if user.yaml_refresh_limit is not none else '' }}"
+                                   placeholder="{{ default_refresh_limit }}" min="0">
+                            <button type="submit">设置</button>
+                        </form>
+                        <div class="hint">
+                            当前：{{ user.yaml_refresh_limit if user.yaml_refresh_limit is not none else default_refresh_limit }} 次（留空=默认）
+                        </div>
+                    </td>
                     <td>
                         <!-- 删除用户表单 -->
-                        <form method="post" style="display: inline;">
+                        <form method="post" class="inline-form">
                             <input type="hidden" name="delete_user" value="{{ user.id }}">
                             <button type="submit">删除</button>
                         </form>
 
                         <!-- 延长有效期表单 -->
-                        <form method="post" style="display: inline;">
+                        <form method="post" class="inline-form">
                             <input type="hidden" name="extend_expiration" value="{{ user.id }}">
                             <input type="number" name="additional_days" value="0" style="width: 50px;">
                             <button type="submit">延长</button>
+                        </form>
+
+                        <!-- 提前重置次数表单 -->
+                        <form method="post" class="inline-form">
+                            <input type="hidden" name="reset_refresh_counter" value="{{ user.id }}">
+                            <button type="submit">提前重置</button>
                         </form>
                     </td>
                 </tr>

@@ -35,6 +35,7 @@ class User(db.Model):
     yaml_version_mtime = db.Column(db.Integer, nullable=True)
     yaml_refresh_window_start = db.Column(db.DateTime, nullable=True)
     yaml_refresh_count = db.Column(db.Integer, nullable=False, default=0)
+    yaml_refresh_limit = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -77,6 +78,8 @@ def ensure_database_schema():
         alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_window_start DATETIME")
     if "yaml_refresh_count" not in existing_columns:
         alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_count INTEGER DEFAULT 0")
+    if "yaml_refresh_limit" not in existing_columns:
+        alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_limit INTEGER")
 
     for stmt in alter_statements:
         db.session.execute(text(stmt))
@@ -96,6 +99,17 @@ def reset_user_refresh_window(user, yaml_mtime):
     user.yaml_version_mtime = yaml_mtime
     user.yaml_refresh_window_start = datetime.fromtimestamp(yaml_mtime)
     user.yaml_refresh_count = 0
+
+
+def get_effective_refresh_limit(user):
+    refresh_limit = user.yaml_refresh_limit
+    if refresh_limit is None:
+        return SUBSCRIPTION_REFRESH_LIMIT
+    try:
+        refresh_limit = int(refresh_limit)
+    except (TypeError, ValueError):
+        return SUBSCRIPTION_REFRESH_LIMIT
+    return refresh_limit if refresh_limit >= 0 else SUBSCRIPTION_REFRESH_LIMIT
 
 
 with app.app_context():
@@ -194,8 +208,44 @@ def admin():
                 db.session.commit()
                 flash('有效期已更新', 'success')
 
+        elif 'set_refresh_limit' in request.form:
+            user = User.query.get(request.form['set_refresh_limit'])
+            if user:
+                raw_limit = (request.form.get('custom_refresh_limit') or '').strip()
+                if raw_limit == '':
+                    user.yaml_refresh_limit = None
+                    db.session.commit()
+                    flash(f'用户 {user.username} 已恢复默认最大次数（{SUBSCRIPTION_REFRESH_LIMIT} 次）', 'success')
+                else:
+                    try:
+                        custom_limit = int(raw_limit)
+                    except ValueError:
+                        flash('最大次数必须是整数', 'danger')
+                    else:
+                        if custom_limit < 0:
+                            flash('最大次数不能小于 0', 'danger')
+                        else:
+                            user.yaml_refresh_limit = custom_limit
+                            db.session.commit()
+                            flash(f'用户 {user.username} 的最大次数已更新为 {custom_limit} 次', 'success')
+
+        elif 'reset_refresh_counter' in request.form:
+            user = User.query.get(request.form['reset_refresh_counter'])
+            if user:
+                yaml_mtime = get_subscription_file_mtime()
+                user.yaml_refresh_count = 0
+                user.yaml_refresh_window_start = datetime.now()
+                if yaml_mtime is not None:
+                    user.yaml_version_mtime = yaml_mtime
+                db.session.commit()
+                flash(f'用户 {user.username} 的刷新次数已提前重置', 'success')
+
     users = User.query.all()
-    return render_template('admin.html', users=enumerate(users, start=1))
+    return render_template(
+        'admin.html',
+        users=enumerate(users, start=1),
+        default_refresh_limit=SUBSCRIPTION_REFRESH_LIMIT
+    )
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -298,10 +348,11 @@ def get_subscription_file(subscription_link):
         return f"当前配置版本的刷新窗口已结束（{SUBSCRIPTION_REFRESH_WINDOW_DAYS}天），请等待配置更新后重置", 429
 
     current_count = user.yaml_refresh_count or 0
-    if current_count >= SUBSCRIPTION_REFRESH_LIMIT:
+    refresh_limit = get_effective_refresh_limit(user)
+    if current_count >= refresh_limit:
         if has_state_update:
             db.session.commit()
-        return f"当前配置版本的刷新次数已达上限（{SUBSCRIPTION_REFRESH_LIMIT}次），请等待配置更新后重置", 429
+        return f"当前配置版本的刷新次数已达上限（{refresh_limit}次），请等待配置更新后重置", 429
 
     user.yaml_refresh_count = current_count + 1
     db.session.commit()

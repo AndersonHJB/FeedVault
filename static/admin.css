@@ -74,6 +74,7 @@ th, td {
     padding: 12px;
     border-bottom: 1px solid #e5e5ea;
     text-align: left;
+    vertical-align: top;
 }
 
 th {
@@ -131,6 +132,25 @@ input[type="number"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.inline-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 8px;
+    margin-bottom: 6px;
+}
+
+.limit-form input[type="number"] {
+    width: 80px;
+    margin: 0;
+}
+
+.hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
 }
 
 /* 登出链接 */
