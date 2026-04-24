@@ -23,6 +23,79 @@ h2 {
     margin-bottom: 8px;
 }
 
+.admin-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.admin-view-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid rgba(18, 40, 36, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.84);
+}
+
+.view-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    color: #274f46;
+    background: transparent;
+    box-shadow: none;
+}
+
+.view-tab:hover {
+    color: #0b4f49;
+    background: rgba(224, 242, 238, 0.9);
+    box-shadow: none;
+}
+
+.view-tab.is-active {
+    color: #ffffff;
+    background: linear-gradient(140deg, #0f766e, #12948a);
+}
+
+.view-tab span {
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.24);
+    font-size: 0.78rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+#adminView {
+    transition: opacity 0.18s ease;
+}
+
+#adminView.is-loading {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.view-note {
+    margin: -4px 0 10px;
+    color: #4b6962;
+    font-size: 0.9rem;
+}
+
+.empty-cell {
+    text-align: center;
+    color: #5c746e;
+    padding: 24px 10px;
+}
+
 .table-container {
     margin-top: 10px;
     border-radius: 16px;
@@ -104,6 +177,12 @@ tbody tr:hover {
     flex-basis: 72px;
 }
 
+.restore-form .days-input {
+    width: 96px;
+    min-width: 96px;
+    flex-basis: 96px;
+}
+
 .inline-form button {
     min-height: 36px;
     padding: 8px 12px;
@@ -160,6 +239,10 @@ tbody tr:hover {
         text-align: center;
     }
 
+    .admin-controls {
+        justify-content: center;
+    }
+
     .logout {
         display: flex;
         justify-content: center;
@@ -167,6 +250,15 @@ tbody tr:hover {
 }
 
 @media (max-width: 720px) {
+    .admin-view-switch,
+    .view-tab {
+        width: 100%;
+    }
+
+    .view-tab {
+        justify-content: center;
+    }
+
     .inline-form {
         display: flex;
         width: 100%;

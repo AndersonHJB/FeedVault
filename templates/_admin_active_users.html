@@ -1,0 +1,66 @@
+<section class="admin-view-panel" data-view-panel="active">
+    <h2>用户列表</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>用户名</th>
+                <th>订阅链接</th>
+                <th>有效期</th>
+                <th>已更新次数</th>
+                <th>最大次数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for index, user in users %}
+                <tr>
+                    <td>{{ index }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.subscription_link }}</td>
+                    <td>{{ user.expiration_date }}</td>
+                    <td class="refresh-count">{{ user.yaml_refresh_count if user.yaml_refresh_count is not none else 0 }} 次</td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin') }}" class="inline-form limit-form">
+                            <input type="hidden" name="current_view" value="active">
+                            <input type="hidden" name="set_refresh_limit" value="{{ user.id }}">
+                            <input type="number" name="custom_refresh_limit"
+                                   value="{{ user.yaml_refresh_limit if user.yaml_refresh_limit is not none else '' }}"
+                                   placeholder="{{ default_refresh_limit }}" min="0">
+                            <button type="submit">设置</button>
+                        </form>
+                        <div class="hint">
+                            当前：{{ user.yaml_refresh_limit if user.yaml_refresh_limit is not none else default_refresh_limit }} 次（留空=默认）
+                        </div>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin') }}" class="inline-form">
+                            <input type="hidden" name="current_view" value="active">
+                            <input type="hidden" name="delete_user" value="{{ user.id }}">
+                            <button type="submit">删除</button>
+                        </form>
+
+                        <form method="post" action="{{ url_for('admin') }}" class="inline-form extend-form">
+                            <input type="hidden" name="current_view" value="active">
+                            <input type="hidden" name="extend_expiration" value="{{ user.id }}">
+                            <input type="number" name="additional_days" value="0" class="days-input">
+                            <button type="submit">延长</button>
+                        </form>
+
+                        <form method="post" action="{{ url_for('admin') }}" class="inline-form">
+                            <input type="hidden" name="current_view" value="active">
+                            <input type="hidden" name="reset_refresh_counter" value="{{ user.id }}">
+                            <button type="submit">提前重置</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="empty-cell">暂无用户</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

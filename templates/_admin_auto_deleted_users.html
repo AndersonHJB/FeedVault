@@ -1,0 +1,41 @@
+<section class="admin-view-panel" data-view-panel="auto_deleted">
+    <h2>过期删除管理</h2>
+    <p class="view-note">订阅过期超过 {{ auto_delete_after_hours }} 小时的用户会自动进入这里，可恢复并重新设置有效期。</p>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>用户名</th>
+                <th>订阅链接</th>
+                <th>原有效期</th>
+                <th>自动删除时间</th>
+                <th>恢复设置</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for index, user in users %}
+                <tr>
+                    <td>{{ index }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.subscription_link }}</td>
+                    <td>{{ user.expiration_date }}</td>
+                    <td>{{ user.auto_deleted_at }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin') }}" class="inline-form restore-form">
+                            <input type="hidden" name="current_view" value="auto_deleted">
+                            <input type="hidden" name="restore_auto_deleted_user" value="{{ user.id }}">
+                            <input type="number" name="restore_expiration_days" value="30" min="1" class="days-input">
+                            <button type="submit">恢复</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="empty-cell">暂无自动删除用户</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

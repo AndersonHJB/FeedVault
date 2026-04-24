@@ -23,6 +23,7 @@ SUBSCRIPTION_FILE_NAME = 'AI悦创·编程1v1.yaml'
 SUBSCRIPTION_FILE_PATH = os.path.join(app.root_path, SUBSCRIPTION_FILE_NAME)
 SUBSCRIPTION_REFRESH_LIMIT = 2
 SUBSCRIPTION_REFRESH_WINDOW_DAYS = 7
+EXPIRED_USER_AUTO_DELETE_AFTER_HOURS = 12
 
 
 # 用户模型
@@ -36,6 +37,7 @@ class User(db.Model):
     yaml_refresh_window_start = db.Column(db.DateTime, nullable=True)
     yaml_refresh_count = db.Column(db.Integer, nullable=False, default=0)
     yaml_refresh_limit = db.Column(db.Integer, nullable=True)
+    auto_deleted_at = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -80,6 +82,8 @@ def ensure_database_schema():
         alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_count INTEGER DEFAULT 0")
     if "yaml_refresh_limit" not in existing_columns:
         alter_statements.append("ALTER TABLE user ADD COLUMN yaml_refresh_limit INTEGER")
+    if "auto_deleted_at" not in existing_columns:
+        alter_statements.append("ALTER TABLE user ADD COLUMN auto_deleted_at DATETIME")
 
     for stmt in alter_statements:
         db.session.execute(text(stmt))
@@ -112,8 +116,55 @@ def get_effective_refresh_limit(user):
     return refresh_limit if refresh_limit >= 0 else SUBSCRIPTION_REFRESH_LIMIT
 
 
+def auto_soft_delete_expired_users():
+    """把过期超过宽限期的用户标记为自动删除，保留记录用于后续恢复。"""
+    now = datetime.now()
+    expiration_cutoff = now - timedelta(hours=EXPIRED_USER_AUTO_DELETE_AFTER_HOURS)
+    users = User.query.filter(
+        User.auto_deleted_at.is_(None),
+        User.expiration_date.isnot(None),
+        User.expiration_date <= expiration_cutoff
+    ).all()
+
+    for user in users:
+        user.auto_deleted_at = now
+
+    if users:
+        db.session.commit()
+
+    return len(users)
+
+
+def normalize_admin_view(view_name):
+    if view_name == 'auto_deleted':
+        return 'auto_deleted'
+    return 'active'
+
+
+def get_admin_view_context(view_name='active'):
+    auto_soft_delete_expired_users()
+    view_name = normalize_admin_view(view_name)
+    active_users = User.query.filter(
+        User.auto_deleted_at.is_(None)
+    ).order_by(User.id.asc()).all()
+    auto_deleted_users = User.query.filter(
+        User.auto_deleted_at.isnot(None)
+    ).order_by(User.auto_deleted_at.desc(), User.id.desc()).all()
+    selected_users = auto_deleted_users if view_name == 'auto_deleted' else active_users
+
+    return {
+        'initial_view': view_name,
+        'users': enumerate(selected_users, start=1),
+        'active_user_count': len(active_users),
+        'auto_deleted_user_count': len(auto_deleted_users),
+        'default_refresh_limit': SUBSCRIPTION_REFRESH_LIMIT,
+        'auto_delete_after_hours': EXPIRED_USER_AUTO_DELETE_AFTER_HOURS
+    }
+
+
 with app.app_context():
     ensure_database_schema()
+    auto_soft_delete_expired_users()
 
 
 # --------------------------------------------------
@@ -126,6 +177,7 @@ def send_expired_users_email():
     """
     with app.app_context():
         expired_users = User.query.filter(
+            User.auto_deleted_at.is_(None),
             User.expiration_date <= datetime.now()
         ).all()
 
@@ -161,7 +213,23 @@ scheduler.add_job(
     minutes=30,
     timezone="Asia/Shanghai"   # 若服务器在国内；在美西用 "America/Los_Angeles"
 )
+
+
+def auto_soft_delete_expired_users_job():
+    with app.app_context():
+        auto_soft_delete_expired_users()
+
+
+scheduler.add_job(
+    id="expired_users_auto_delete_job",
+    func=auto_soft_delete_expired_users_job,
+    trigger="interval",
+    minutes=30,
+    timezone="Asia/Shanghai"
+)
 scheduler.start()
+
+
 @app.route('/')
 def index():
     # 定义视频列表，新增 `video_source` 字段表示视频来源
@@ -176,6 +244,7 @@ def index():
 @app.route('/admin', methods=['GET', 'POST'])
 @admin_login_required
 def admin():
+    current_view = normalize_admin_view(request.form.get('current_view') or request.args.get('view'))
     if request.method == 'POST':
         if 'username' in request.form and 'password' in request.form:
             hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
@@ -240,12 +309,27 @@ def admin():
                 db.session.commit()
                 flash(f'用户 {user.username} 的刷新次数已提前重置', 'success')
 
-    users = User.query.all()
-    return render_template(
-        'admin.html',
-        users=enumerate(users, start=1),
-        default_refresh_limit=SUBSCRIPTION_REFRESH_LIMIT
-    )
+        elif 'restore_auto_deleted_user' in request.form:
+            user = User.query.get(request.form['restore_auto_deleted_user'])
+            restore_days = int(request.form.get('restore_expiration_days', 30))
+            if user and user.auto_deleted_at:
+                if restore_days <= 0:
+                    flash('恢复有效期天数必须大于 0', 'danger')
+                else:
+                    user.expiration_date = datetime.now() + timedelta(days=restore_days)
+                    user.auto_deleted_at = None
+                    db.session.commit()
+                    flash(f'用户 {user.username} 已恢复，有效期 {restore_days} 天', 'success')
+
+    return render_template('admin.html', **get_admin_view_context(current_view))
+
+
+@app.route('/admin/users/<view_name>')
+@admin_login_required
+def admin_users_view(view_name):
+    view_name = normalize_admin_view(view_name)
+    template_name = '_admin_auto_deleted_users.html' if view_name == 'auto_deleted' else '_admin_active_users.html'
+    return render_template(template_name, **get_admin_view_context(view_name))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -265,7 +349,7 @@ def user_login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username, auto_deleted_at=None).first()
         if user and bcrypt.check_password_hash(user.password, password):
             if user.expiration_date < datetime.now():
                 flash('您的账户已过期，请购买', 'warning')
@@ -294,7 +378,7 @@ def logout():
 def subscription():
     user_id = session.get('user_id')
     user = User.query.get(user_id)
-    if not user:
+    if not user or user.auto_deleted_at:
         return "用户不存在", 404
 
     if user.expiration_date < datetime.now():
@@ -324,7 +408,7 @@ def purchase():
 @app.route('/subscription/<subscription_link>.yaml')
 def get_subscription_file(subscription_link):
     # 验证订阅链接是否有效
-    user = User.query.filter_by(subscription_link=subscription_link).first()
+    user = User.query.filter_by(subscription_link=subscription_link, auto_deleted_at=None).first()
     if not user or user.expiration_date < datetime.now():
         return "订阅链接已失效或无效", 404
 
